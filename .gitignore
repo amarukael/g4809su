@@ -1,0 +1,7 @@
+/test-output/
+*/target/**
+/target/
+/src/test/java/com/ids/automation/testrunner/
+/src/test/resources/extent.properties
+/.idea/
+.vscode/
