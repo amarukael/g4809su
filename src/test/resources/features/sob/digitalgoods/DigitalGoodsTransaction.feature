@@ -22,7 +22,7 @@ Feature: Digital Goods Transaction
     Given I am in DigitalGoods Transaction
     When DGMS not show Introduction Feature
     Then I hit Filter Button on DGMS Transaction
-    * I fill From Date ("01,01") and To Date ("30,01") on DGMS Transaction
+    * I fill From Date ("10,07") and To Date ("10,08") on DGMS Transaction
     When I click apply button filter
     Then DGMS Datatable show data Transaction
 

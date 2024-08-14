@@ -1,12 +1,18 @@
 package pages.sob;
 
-import helper.SOBHelper;
-import org.openqa.selenium.*;
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import helper.SOBHelper;
 
 public class SOBGlobalPages {
     WebDriver driver;
@@ -143,20 +149,17 @@ public class SOBGlobalPages {
         }
     }
 
-    public void dropFill(String arg0, String arg1) {
-        WebElement field = driver
-                .findElement(By.xpath("(//label[normalize-space(text())='" + arg0 + "']/following::input)[1]"));
-        sobHelper.delay(300);
-        field.click();
-        field.sendKeys(arg1);
-        sobHelper.delay(300);
-        field.sendKeys(Keys.DOWN);
-        sobHelper.delay(300);
-        field.sendKeys(Keys.ENTER);
-    }
-
     public void dropList(String arg0, String arg1) {
-        
+        if (arg1.equalsIgnoreCase("null") || arg1.equals("")) {
+            System.out.println("Skiping");
+        } else {
+            WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + arg0 + "')]"));
+            WebElement container = label.findElement(By.xpath("./following-sibling::div//div[@role='button']"));
+            sobHelper.delay(500);
+            container.click();
+            sobHelper.delay(500);
+            driver.findElement(By.xpath("//li[normalize-space(text())='" + arg1 + "']")).click();
+        }
     }
 
 }
