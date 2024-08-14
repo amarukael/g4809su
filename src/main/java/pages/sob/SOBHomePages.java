@@ -2,13 +2,11 @@ package pages.sob;
 
 import helper.SOBHelper;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class SOBHomePages {
     WebDriver driver;
@@ -17,7 +15,7 @@ public class SOBHomePages {
 
     public SOBHomePages(WebDriver driver) {
         this.driver = driver;
-        this.driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        this.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }

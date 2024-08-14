@@ -6,7 +6,6 @@ import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
-import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
 import pages.sob.merchantoy.SOBMerchantOyReconciliationPages;
 import utility.Helper;

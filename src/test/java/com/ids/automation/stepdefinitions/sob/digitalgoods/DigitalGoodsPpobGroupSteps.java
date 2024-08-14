@@ -11,8 +11,6 @@ import pages.sob.SOBHomePages;
 import pages.sob.digitalgoods.SOBDigitalGoodsPpobGroupPages;
 import utility.Helper;
 
-import static org.junit.Assert.assertFalse;
-
 public class DigitalGoodsPpobGroupSteps {
     static WebDriver driver;
     SOBHomePages homePage;
