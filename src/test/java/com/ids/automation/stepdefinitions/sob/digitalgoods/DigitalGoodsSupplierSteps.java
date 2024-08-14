@@ -5,7 +5,6 @@ import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.openqa.selenium.*;
 import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;

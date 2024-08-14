@@ -8,18 +8,25 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class SOBDigitalGoodsPpobGroupPages {
+public class SOBDigitalGoodsCategoryPages {
     WebDriver driver;
     WebDriverWait wait;
     SOBHelper sobHelper = new SOBHelper();
 
-    public SOBDigitalGoodsPpobGroupPages(WebDriver driver){
+    public SOBDigitalGoodsCategoryPages(WebDriver driver){
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    public void tabPPOBGroup() {
-        driver.findElement(By.xpath("//button[text()='PPOB Group']")).click();
+    public void tabCategory() {
+        driver.findElement(By.xpath("//button[text()='Category']")).click();
+    }
+
+    public void listStatus(String arg1) {
+        sobHelper.delay(300);
+        driver.findElement(By.id("mui-component-select-status")).click();
+        sobHelper.delay(300);
+        
     }
 }

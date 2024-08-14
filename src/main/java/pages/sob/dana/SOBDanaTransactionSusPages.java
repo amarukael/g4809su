@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class SOBDanaTransactionSusPages {
     Gson gson = new Gson();
@@ -30,7 +29,7 @@ public class SOBDanaTransactionSusPages {
     }
 
     public Integer getRowsDataTable() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         WebElement dataTable = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//div[contains(@class,'MuiDataGrid-root MuiDataGrid-root--densityStandard')]")));
         Integer result = Integer.parseInt(dataTable.getAttribute("aria-rowcount")) - 1;
@@ -38,7 +37,7 @@ public class SOBDanaTransactionSusPages {
     }
 
     public Integer getRowsPerPage() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         WebElement rowsPerPage = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//p[@class='MuiTablePagination-displayedRows css-m2ckgc']")));
         Integer idx = rowsPerPage.getText().indexOf("of ") + 3;
@@ -48,7 +47,7 @@ public class SOBDanaTransactionSusPages {
 
     public boolean getDataTable() {
         try {
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             WebElement dataTable = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("(//div[@class='MuiDataGrid-cellContent'])[1]")));
             if (dataTable.isDisplayed()) {
@@ -63,7 +62,7 @@ public class SOBDanaTransactionSusPages {
 
     public boolean getSuccessAlert() {
         try {
-            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
             WebElement successAlert = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("(//div[contains(@class,'MuiPaper-root MuiPaper-elevation')])[3]")));
             if (successAlert.isDisplayed()) {

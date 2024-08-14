@@ -6,6 +6,7 @@ Feature: Digital Goods Transaction
     Given I open SOB Website
     When I logged in with username "<username>"
     Then I "<condition>" navigate to DigitalGoods Transaction
+
     Examples:
       | condition    | username |
       | Successfully | adminqa  |
@@ -22,7 +23,7 @@ Feature: Digital Goods Transaction
     Given I am in DigitalGoods Transaction
     When DGMS not show Introduction Feature
     Then I hit Filter Button on DGMS Transaction
-    * I fill From Date ("01,01") and To Date ("30,01") on DGMS Transaction
+    * I fill From Date ("10,07") and To Date ("10,08") on DGMS Transaction
     When I click apply button filter
     Then DGMS Datatable show data Transaction
 
@@ -35,12 +36,13 @@ Feature: Digital Goods Transaction
     * I Click Field "<field>" and Choose "<value>" on DGMS Transaction
     When I click apply button filter
     Then DGMS Datatable show data Transaction
+
     Examples:
       | field           | value                |
       | Transactions ID | SLS16001505254       |
       | Product Code    | EMVIRGO              |
-      | Customer ID     | 083812854541         |
-      | Serial Number   | 99970111447889       |
+      | Customer ID     |         083812854541 |
+      | Serial Number   |       99970111447889 |
       | Ref             | SLS20240115224614352 |
       | Status          | SUCCESS              |
       | Partner         | Dana                 |

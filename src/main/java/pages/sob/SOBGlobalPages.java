@@ -1,13 +1,18 @@
 package pages.sob;
 
-import helper.SOBHelper;
-import org.openqa.selenium.*;
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import helper.SOBHelper;
 
 public class SOBGlobalPages {
     WebDriver driver;
@@ -28,7 +33,7 @@ public class SOBGlobalPages {
         WebElement dataTableListTransaction = driver.findElement(
                 By.xpath("//div[@class='MuiDataGrid-virtualScroller css-frlfct']"));
         ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollTo({left: "+left+", top: 0, behavior: 'smooth'});", dataTableListTransaction);
+                "arguments[0].scrollTo({left: " + left + ", top: 0, behavior: 'smooth'});", dataTableListTransaction);
         sobHelper.delay(500);
     }
 
@@ -36,7 +41,7 @@ public class SOBGlobalPages {
         try {
             wait.until(ExpectedConditions.presenceOfNestedElementsLocatedBy(By.xpath("//div[contains" +
                     "(@class, 'MuiDataGrid-virtualScrollerRenderZone')]"), By.xpath("*")));
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception("Data Not Appear");
         }
     }
@@ -45,7 +50,7 @@ public class SOBGlobalPages {
         waitDatatableAppear();
         scrollToBottom();
         sobHelper.delay(1000);
-        WebElement nextBtn =  driver.findElement(By.xpath(
+        WebElement nextBtn = driver.findElement(By.xpath(
                 "//button[@aria-label='Go to next page']"));
 
         for (int i = 0; i < arg1; i++) {
@@ -62,7 +67,7 @@ public class SOBGlobalPages {
         waitDatatableAppear();
         scrollToBottom();
         sobHelper.delay(1000);
-        WebElement prevBtn =  driver.findElement(By.xpath(
+        WebElement prevBtn = driver.findElement(By.xpath(
                 "//button[@aria-label='Go to previous page']"));
         for (int i = 0; i < intArg1; i++) {
             if (!prevBtn.isEnabled()) {
@@ -85,7 +90,8 @@ public class SOBGlobalPages {
     }
 
     public void fillFromDate(String[] value) {
-        WebElement fromDate = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@placeholder='DD-MM-YYYY']")));
+        WebElement fromDate = wait
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@placeholder='DD-MM-YYYY']")));
         fromDate.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         sobHelper.delay(800);
         for (String s : value) {
@@ -95,7 +101,8 @@ public class SOBGlobalPages {
     }
 
     public void fillToDate(String[] value) {
-        WebElement fromDate = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("(//input[@placeholder='DD-MM-YYYY'])[2]")));
+        WebElement fromDate = wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath("(//input[@placeholder='DD-MM-YYYY'])[2]")));
         fromDate.sendKeys(Keys.chord(Keys.CONTROL, "a"));
         sobHelper.delay(800);
         for (String s : value) {
@@ -116,7 +123,7 @@ public class SOBGlobalPages {
         try {
             driver.findElement(By.xpath("//*[contains(@class, 'MuiAlert-filledError')]"));
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
@@ -130,15 +137,29 @@ public class SOBGlobalPages {
             return false;
         }
     }
-        public boolean errorField() {
-            driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
-            try {
-                driver.findElement(
-                        By.xpath("//p[contains(@class,'MuiFormHelperText-root Mui-error')]"));
-                return true;
-            } catch (NoSuchElementException e) {
-                return false;
-            }
+
+    public boolean errorField() {
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        try {
+            driver.findElement(
+                    By.xpath("//p[contains(@class,'MuiFormHelperText-root Mui-error')]"));
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
         }
+    }
+
+    public void dropList(String arg0, String arg1) {
+        if (arg1.equalsIgnoreCase("null") || arg1.equals("")) {
+            System.out.println("Skiping");
+        } else {
+            WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + arg0 + "')]"));
+            WebElement container = label.findElement(By.xpath("./following-sibling::div//div[@role='button']"));
+            sobHelper.delay(500);
+            container.click();
+            sobHelper.delay(500);
+            driver.findElement(By.xpath("//li[normalize-space(text())='" + arg1 + "']")).click();
+        }
+    }
 
 }
