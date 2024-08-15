@@ -77,6 +77,12 @@ public class AsuransiSteps {
         solpayWebHelper.delay(1000);
     }
 
+    @Given("I on solusipayweb")
+    public void iOnSolusipayweb() {
+        setUp();
+        solpayWebHelper.delay(3000);
+    }
+
     @When("I choose {string} Asuransi")
     public void iChooseAsuransi(String arg0) throws Exception {
         solpayWebHelper.delay(1000);
@@ -95,6 +101,11 @@ public class AsuransiSteps {
     @Given("I on solusipayweb Token Listrik page")
     public void I_on_solusipayweb_Token_Listrik_page() {
         setUp();
+        solpayWeb.scrollToTopUp();
+        solpayWebHelper.delay(2000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Ewallet");
+        countImage++;
         solpayWebHelper.delay(3000);
         solpayWeb.hitBtnMenuPlnPre();
         solpayWebHelper.delay(5000);
@@ -131,6 +142,7 @@ public class AsuransiSteps {
     @Given("I on solusipayweb TV Cable page")
     public void I_on_solusipayweb_TV_Cable_page() {
         setUp();
+        solpayWeb.scrollToMiddlePage();
         solpayWebHelper.delay(3000);
         solpayWeb.hitBtnMenuTv();
         solpayWebHelper.delay(5000);
@@ -155,6 +167,12 @@ public class AsuransiSteps {
     @Given("I on solusipayweb Pulsa page")
     public void I_on_solusipayweb_Pulsa_page() {
         setUp();
+        solpayWeb.scrollToTopUp();
+        solpayWebHelper.delay(2000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Ewallet");
+        countImage++;
+        solpayWebHelper.delay(3000);
         solpayWebHelper.delay(3000);
         solpayWeb.hitBtnMenuPulsa();
         solpayWebHelper.delay(5000);
@@ -164,5 +182,4 @@ public class AsuransiSteps {
         solpayWebHelper.delay(3000);
     }
 
-    
 }

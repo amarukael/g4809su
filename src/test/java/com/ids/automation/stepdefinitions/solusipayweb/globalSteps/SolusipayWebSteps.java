@@ -199,14 +199,14 @@ public class SolusipayWebSteps {
         solpayWebHelper.delay(1000);
     }
 
-    @When("I navigate to atur keuntungan asuransi")
-    public void I_navigate_to_atur_keuntungan_asuransi() {
+    @When("I navigate to atur keuntungan")
+    public void I_navigate_to_atur_keuntungan_() {
         setUpSolusipayWeb2();
-        solpayWeb.scrollToMiddlePage();
+        solpayWeb.scrollToBottomPage();
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Navigate keuntungan");
         solpayWebHelper.delay(2000);
         solpayWeb.hitBtnMenuAtrOBA();
-        screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - atur keuntungan");
         solpayWebHelper.delay(1000);
     }
 
@@ -214,8 +214,32 @@ public class SolusipayWebSteps {
     public void I_click_category__on_keuntungan(String arg0) {
         solpayWebHelper.delay(1000);
         solpayWeb.btnCatKeuntungan(arg0);
-        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - atur keuntungan");
         solpayWebHelper.delay(5000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - atur keuntungan");
+        solpayWebHelper.delay(3000);
+    }
+
+    @Then("I navigate to check detail transaction with Category {string}")
+    public void I_navigate_to_check_detail_transaction_with_Category(String s) {
+        setUpSolusipayWeb2();
+        solpayWebHelper.delay(2000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Home");
+        solpayWeb.hitBtnTransaction();
+        solpayWebHelper.delay(5000);
+        solpayWeb.hitBtnFilterTransaction(s);
+        solpayWebHelper.delay(1000);
+        screenshotData = Helper.takeScreenshot(driver);
+        solpayWeb.hitValueFilterTransaction(s);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - List Transaction");
+        solpayWebHelper.delay(2000);
+        solpayWeb.listTransactionCard();
+        solpayWebHelper.delay(1000);
+        solpayWeb.vrfyDetailTransaction();
+        solpayWebHelper.delay(1000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - On Detail Transaction");
     }
 
 }

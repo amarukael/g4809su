@@ -206,12 +206,22 @@ public class SolusipayWebPages {
     // end -- Button Product PPOB //
 
     public void scrollToBottomPage() {
-        ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, window.innerHeight);");
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        long previousHeight = (Long) js.executeScript("return document.body.scrollHeight");
+        while (true) {
+            js.executeScript("window.scrollBy(0, 1000);");
+            long newHeight = (Long) js.executeScript("return document.body.scrollHeight");
+            if (newHeight == previousHeight) {
+                break;
+            }
+
+            previousHeight = newHeight;
+        }
     }
 
     public void scrollToMiddlePage() {
         ((JavascriptExecutor) driver)
-                .executeScript("window.scrollTo(0, (document.body.scrollHeight - window.innerHeight) / 2)");
+                .executeScript("window.scrollTo(0, (document.body.scrollHeight - window.innerHeight) / 3)");
     }
 
     public void hitBackButton() {
@@ -342,4 +352,34 @@ public class SolusipayWebPages {
     }
 
     // End Filter
+
+    public void scrollToTopUp() {
+        WebElement element = driver.findElement(By.xpath("//h1[normalize-space(text())='Top-Up']"));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+
+        // Scroll the element into view
+        js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", element);
+
+    }
+
+    public void hitBtnFilterTransaction(String s) {
+        try {
+            WebElement element = driver.findElement(By.id("btn_filter_product"));
+            element.click();
+            WebElement scrollableDiv = driver.findElement(By.className("drawerContent"));
+            WebElement targetElement = scrollableDiv
+                    .findElement(By.xpath("//span[normalize-space(text())='" + s + "']"));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", targetElement);
+            Thread.sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void hitValueFilterTransaction(String s) {
+        WebElement scrollableDiv = driver.findElement(By.className("drawerContent"));
+        scrollableDiv.findElement(By.xpath("//span[normalize-space(text())='" + s + "']")).click();
+    }
 }
