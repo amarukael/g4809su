@@ -1,15 +1,19 @@
 package com.ids.automation.stepdefinitions.solusipayweb.globalSteps;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ids.automation.configuration.BrowserSetup;
+
 import constant.SolusipayWebConstant;
 import helper.SolusipayWebHelper;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import pages.solusipayweb.globalpages.SolusipayWebPages;
 import utility.Helper;
-import io.cucumber.java.Scenario;
 
 public class SolusipayWebSteps {
     public static Scenario scenario;
@@ -26,7 +30,7 @@ public class SolusipayWebSteps {
     }
 
     @Given("I open solusipayweb page")
-    public void iOpenSolusipayWebPage(){
+    public void iOpenSolusipayWebPage() {
         setUpSolusipayWeb();
         solpayWeb.vrfyElementSolpayWebPage();
         solpayWebHelper.delay(3000);
@@ -35,23 +39,23 @@ public class SolusipayWebSteps {
         solpayWebHelper.delay(1000);
     }
 
-    public void setUpSolusipayWeb(){
-        driver = BrowserSetup.getDriver();
+    public void setUpSolusipayWeb() {
+        driver = BrowserSetup.getDriverMobile();
         driver.get(SolusipayWebConstant.UrlSolpayWeb);
-        if(solpayWeb == null){
+        if (solpayWeb == null) {
             solpayWeb = new SolusipayWebPages(driver);
         }
     }
 
-    public void setUpSolusipayWeb2(){
-        driver = BrowserSetup.getDriver();
-        if(solpayWeb == null){
+    public void setUpSolusipayWeb2() {
+        driver = BrowserSetup.getDriverMobile();
+        if (solpayWeb == null) {
             solpayWeb = new SolusipayWebPages(driver);
         }
     }
 
     @When("I click back button")
-    public void iClickBackButton(){
+    public void iClickBackButton() {
         solpayWeb.hitBackButton();
         solpayWebHelper.delay(850);
         screenshotData = Helper.takeScreenshot(driver);
@@ -59,7 +63,7 @@ public class SolusipayWebSteps {
     }
 
     @When("I click buy button")
-    public void iClickBuyButton(){
+    public void iClickBuyButton() {
         setUpSolusipayWeb2();
         solpayWeb.hitBuyButton();
         solpayWebHelper.delay(500);
@@ -97,7 +101,7 @@ public class SolusipayWebSteps {
     }
 
     @Then("Solusipayweb show process payment")
-    public void solusipayweb_show_process_payment(){
+    public void solusipayweb_show_process_payment() {
         setUpSolusipayWeb2();
         solpayWebHelper.delay(500);
         solpayWeb.vrfyElementPaymentProcessPage();
@@ -128,10 +132,15 @@ public class SolusipayWebSteps {
     }
 
     @Then("I navigate to check detail transaction")
-    public void iNavigateToDetailTransaction(){
+    public void iNavigateToDetailTransaction() {
         setUpSolusipayWeb2();
-        solpayWebHelper.delay(3000);
+        solpayWebHelper.delay(2000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Home");
         solpayWeb.hitBtnTransaction();
+        solpayWebHelper.delay(5000);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - List Transaction");
         solpayWebHelper.delay(2000);
         solpayWeb.listTransactionCard();
         solpayWebHelper.delay(1000);
@@ -143,7 +152,7 @@ public class SolusipayWebSteps {
 
     // End -- Steps Success Payment until Invoice //
 
-    //Filter Dedom Product
+    // Filter Dedom Product
     @When("I click button filter")
     public void iClickButtonFilter() {
         setUpSolusipayWeb2();
@@ -155,7 +164,7 @@ public class SolusipayWebSteps {
 
     @When("I select filter {string}, {string}, {string}, {string}")
     public void iSelectFilter(String condition, String priceMin, String priceMax, String filterRange) {
-        solpayWeb.selectFilter(condition,priceMin,priceMax,filterRange);
+        solpayWeb.selectFilter(condition, priceMin, priceMax, filterRange);
         solpayWebHelper.delay(1000);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Pulsa Page - Select or Fill Filter");
@@ -170,6 +179,43 @@ public class SolusipayWebSteps {
         scenario.attach(screenshotData, "image/png", "Pulsa Page - Click Button Save");
         solpayWebHelper.delay(500);
     }
-    //End filter denom product
+    // End filter denom product
+
+    @When("I choose {string} on {string}")
+    public void iChooseOn(String arg0, String arg1) {
+        setUpSolusipayWeb2();
+        solpayWeb.chooseDenom(arg0);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - " + arg1 + "");
+        solpayWebHelper.delay(1000);
+    }
+
+    @When("I choose {string} on Product {string}")
+    public void iChooseOnProduct(String arg0, String arg1) {
+        setUpSolusipayWeb2();
+        solpayWeb.chooseDenomProuct(arg0, arg1);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - " + arg1 + "");
+        solpayWebHelper.delay(1000);
+    }
+
+    @When("I navigate to atur keuntungan asuransi")
+    public void I_navigate_to_atur_keuntungan_asuransi() {
+        setUpSolusipayWeb2();
+        solpayWeb.scrollToMiddlePage();
+        solpayWebHelper.delay(2000);
+        solpayWeb.hitBtnMenuAtrOBA();
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - atur keuntungan");
+        solpayWebHelper.delay(1000);
+    }
+
+    @Then("I click category {string} on keuntungan")
+    public void I_click_category__on_keuntungan(String arg0) {
+        solpayWebHelper.delay(1000);
+        solpayWeb.btnCatKeuntungan(arg0);
+        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - atur keuntungan");
+        solpayWebHelper.delay(5000);
+    }
 
 }
