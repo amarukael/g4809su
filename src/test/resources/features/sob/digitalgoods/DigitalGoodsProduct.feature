@@ -14,7 +14,7 @@ Feature: Digital Goods Product
       | Failed       | rhesa    |
 
   @dgms_product_filter
-  Scenario Outline: [SOB Digital Goods] Using Filter
+  Scenario Outline: [SOB][DGMS][FE] Product Master - Product Using Filter by Field
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Product on DGMS Product Master
     When I click filter button on "Digital Goods Product"
@@ -23,17 +23,26 @@ Feature: Digital Goods Product
     Then Datatable show data "Digital Goods Product"
 
     Examples:
-      | label         | value           |
-      | Status        | Inactive        |
-      | Supplier Name | JPA             |
-      | Category Name | MULTIFINANCE    |
-      | Product ID    | PDAMLAMPUNGKOT  |
-      | Product Name  | PBB Kab. Brebes |
-      # | Category & Sub | VOUCHER GAMES,Steam | Success   | Valid Product ID |
-      # | Sub Category Name | test         | Success   | Valid Product ID |
+      | label             | value                           |
+      | Status            | Inactive                        |
+      | PPOB Name         | VOUCHER TOPUP IN GAME( UNIPIN ) |
+      | Supplier Name     | JPA                             |
+      | Category Name     | MULTIFINANCE                    |
+      | Product ID        | PDAMLAMPUNGKOT                  |
+      | Product Name      | PBB Kab. Brebes                 |
+      | Category & Sub    | VOUCHER GAMES,Steam             |
+      | Sub Category Name | Steam                           |
+      | PPOB Name         | random,100                      |
+      | Category Name     | space,2                         |
+      | Product ID        | random,100                      |
+      | Product Name      | random,100                      |
+      | Category & Sub    | VOUCHER GAMES,Steam             |
+      | Sub Category Name | Steam                           |
+      | Product ID        | random,101                      |
+      | Product Name      | random,101                      |
 
   @dgms_product_filter_all_field
-  Scenario Outline: [SOB Digital Goods] Using All Field Filter -- <condition>
+  Scenario Outline: [SOB][DGMS][FE] Product Master - Product Using Filter by All Field
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Product on DGMS Product Master
     When I click filter button on "Digital Goods Product"
@@ -48,11 +57,25 @@ Feature: Digital Goods Product
     Then Datatable show data "Digital Goods Product"
 
     Examples:
-      | productId | productName                 | ppobName | categoryName | subCatName | supplierName       | status |
-      |     15058 | PDAM KAB. BALANGAN (KALSEL) | PDAM     | PDAM         |            | IDSRESTProjectDana | Active |
+      | productId     | productName               | ppobName                | categoryName  | subCatName | supplierName | status   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      |               | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 |                           | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 |                         | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) |               | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES |            | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      |              | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       |          |
+      | random,100    | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | random,100                | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | random,100              | VOUCHER GAMES | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | space,2       | Steam      | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | space,2    | UNIPIN       | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | AMK          | Active   |
+      | POD_STIDR_007 | Steam Wallet (IDR) 400000 | VOUCHER GAME ( UNIPIN ) | VOUCHER GAMES | Steam      | UNIPIN       | Inactive |
 
-  @dgms_add_new_product
-  Scenario Outline: [SOB Digital Goods] Add New Product ("<desc>")
+  @dgms_add_new_single_product
+  Scenario Outline: [SOB][DGMS][FE] Product Master - Product Add New Single Product
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Product on DGMS Product Master
     When I click add button on page
