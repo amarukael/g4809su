@@ -63,12 +63,18 @@ public class DigitalGoodsProductSteps {
         sobHelper.delay(500);
         if (arg0.equalsIgnoreCase("Category Name")) {
             productPages.dropFill(arg0, arg1);
+            if (productPages.checkNoOption()) {
+                screenshotData = Helper.takeScreenshot(driver);
+                scenario.attach(screenshotData, "image/png", "Filter Section");
+            }
             assertFalse("No Options", productPages.checkNoOption());
             new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
         } else if (arg0.equalsIgnoreCase("Sub Category Name")) {
             productPages.listSubCategory(arg1);
-            screenshotData = Helper.takeScreenshot(driver);
-            scenario.attach(screenshotData, "image/png", "Sub Cat Section");
+            if (productPages.checkNoOption()) {
+                screenshotData = Helper.takeScreenshot(driver);
+                scenario.attach(screenshotData, "image/png", "Filter Section");
+            }
             assertFalse("No Options", productPages.checkNoOption());
             new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
         } else if (arg0.equalsIgnoreCase("Status") || arg0.equalsIgnoreCase("Supplier Name")
@@ -78,12 +84,12 @@ public class DigitalGoodsProductSteps {
             String[] value = arg1.split(",");
             productPages.dropFill("Category Name", value[0]);
             sobHelper.delay(500);
+            screenshotData = Helper.takeScreenshot(driver);
+            scenario.attach(screenshotData, "image/png", "Sub Cat Section");
             new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
             sobHelper.delay(1000);
             productPages.dropFill("Sub Category Name", value[1]);
             sobHelper.delay(500);
-            screenshotData = Helper.takeScreenshot(driver);
-            scenario.attach(screenshotData, "image/png", "Sub Cat Section");
             assertFalse("No Options", productPages.checkNoOption());
             new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
         } else {
@@ -96,6 +102,9 @@ public class DigitalGoodsProductSteps {
             } else if (value[0].equals("space")) {
                 String spaces = " ".repeat(Integer.parseInt(value[1]));
                 globalPages.inputText(arg0, spaces);
+            } else if (value[0].equals("randomcase")) {
+                String randomcase = sobHelper.toRandomCase(value[1]);
+                globalPages.inputText(arg0, randomcase);
             } else {
                 globalPages.inputText(arg0, arg1);
             }
@@ -103,7 +112,7 @@ public class DigitalGoodsProductSteps {
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Filter Section");
 
-        // assertFalse("Hint error appeared", globalPages.errorField());
+        assertFalse("Hint error appeared", globalPages.errorField());
         sobHelper.delay(200);
     }
 

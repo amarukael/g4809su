@@ -1,16 +1,19 @@
 package helper;
 
-import constant.SOBConstant;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
+import constant.SOBConstant;
+
 public class SOBHelper {
+    private static final SecureRandom random = new SecureRandom();
     private String envTest = SOBConstant.envTes;
     private String pathExtendProperties = "src/test/resources/extent.properties";
 
@@ -235,4 +238,23 @@ public class SOBHelper {
         }
         return "";
     }
+
+    public String toRandomCase(String input) {
+        StringBuilder sb = new StringBuilder(input.length());
+
+        for (char c : input.toCharArray()) {
+            if (Character.isLetter(c)) {
+                if (random.nextBoolean()) {
+                    sb.append(Character.toUpperCase(c));
+                } else {
+                    sb.append(Character.toLowerCase(c));
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
+    }
+
 }

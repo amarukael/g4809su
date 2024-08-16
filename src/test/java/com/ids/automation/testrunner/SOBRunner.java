@@ -53,20 +53,29 @@ public class SOBRunner {
     @AfterClass
     public static void rename() {
         String nameFile = Hooks.getData();
-        String oldFilePath = "test-output/Report-Automation_ 16_Aug_24/PDF Report/ExtentPDF.pdf";
-        String newFilePath = "test-output/Report-Automation_ 16_Aug_24/PDF Report/" + nameFile + ".pdf";
+        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\ExtendPDF.pdf";
+        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\"
+                + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);
         if (newFile.exists()) {
             newFile.delete();
         }
 
-        // Mencoba merename file
-        if (oldFile.renameTo(newFile)) {
-            System.out.println("File berhasil di-rename.");
-        } else {
-            System.out.println("Gagal merename file.");
+        while (true) {
+            try {
+                if (oldFile.renameTo(newFile)) {
+                    System.out.println("File berhasil di-rename.");
+                    break;
+                } else {
+                    System.out.print(oldFile.exists());
+                    System.out.println("Gagal merename file.");
+                }
+                Thread.sleep(500);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println(nameFile);
     }
 }
