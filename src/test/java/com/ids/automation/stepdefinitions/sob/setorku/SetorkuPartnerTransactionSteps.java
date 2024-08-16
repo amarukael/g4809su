@@ -1,17 +1,17 @@
 package com.ids.automation.stepdefinitions.sob.setorku;
 
+import org.openqa.selenium.WebDriver;
+
 import com.ids.automation.configuration.BrowserSetup;
 import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
+
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Then;
-import org.openqa.selenium.WebDriver;
 import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
 import pages.sob.setorku.SOBSetorkuPartnerTransactionPages;
-import pages.sob.setorku.SOBSetorkuTransactionPages;
 import utility.Helper;
-
 
 public class SetorkuPartnerTransactionSteps {
     static WebDriver driver;
@@ -39,17 +39,19 @@ public class SetorkuPartnerTransactionSteps {
             sobSetorkuPartnerTransactionPages.fieldBranch();
             sobHelper.delay(300);
             sobSetorkuPartnerTransactionPages.listBranch(value[0]);
-        }else {
+        } else {
             if (value[0].equalsIgnoreCase("random")) {
                 globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
             } else if (value[0].equalsIgnoreCase("number")) {
                 globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
+            } else if (value[0].equals("randomcase")) {
+                globalPages.inputText(arg0, sobHelper.toRandomCase(value[1]));
             } else {
                 globalPages.inputText(arg0, value[0]);
             }
         }
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Field : " + arg0+"\nValue : "+arg1);
+        scenario.attach(screenshotData, "image/png", "Field : " + arg0 + "\nValue : " + arg1);
         sobHelper.delay(500);
     }
 }

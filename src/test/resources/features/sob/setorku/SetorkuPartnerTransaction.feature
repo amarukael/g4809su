@@ -6,6 +6,7 @@ Feature: Setorku Transaction
     Given I open SOB Website
     When I logged in with username "<username>"
     Then I "<condition>" navigate to "SetorKu, Partner Transaction"
+
     Examples:
       | condition    | username |
       | Successfully | adminqa2 |
@@ -19,10 +20,11 @@ Feature: Setorku Transaction
     * I choose "<partner>" partnerID on filter field
     When I click apply button filter
     Then Datatable show data "SetorKu Partner Transaction"
+
     Examples:
       | partner | condition |
       | PTF     | Success   |
-      | 25      | Failed    |
+      |      25 | Failed    |
 
   @setorku_partner_transaction_filter_by_field
   Scenario Outline: [SOB SetorKu] Get data transaction using Filter by field "<label>" --"<condition>"
@@ -33,24 +35,25 @@ Feature: Setorku Transaction
     * I click field "<label>" and fill with "<value>" on Setorku Partner Transaction
     When I click apply button filter
     Then Datatable show data "SetorKu Partner Transaction"
-    Examples:
-      | partner | label         | value                  | condition |
-      | PTF     | Tracking Reff | 412748815              | Success   |
-      | OTO     | Payment Code  | 50120240802150479001   | Success   |
-      | SOF     | User Name     | SOF.SSS.MASAMBA.PALOPO | Success   |
-      | PTF     | Receipt No    | 20240731165048PT062    | Success   |
-      | OTO     | Branch Name   | MAKASSAR               | Success   |
-      | SOF     | User Name     | MASAMBA                | Failed    |
-      | PTF     | Tracking Reff | random,20              | Failed    |
-      | OTO     | Payment Code  | random,64              | Failed    |
-      | SOF     | User Name     | random,50              | Failed    |
-      | PTF     | Receipt No    | random,20              | Failed    |
-      | OTO     | Branch Name   | SAMARINDA              | Failed    |
-      | PTF     | Tracking Reff | random,21              | Failed    |
-      | OTO     | Payment Code  | random,65              | Failed    |
-      | SOF     | User Name     | random,51              | Failed    |
-      | PTF     | Receipt No    | random,21              | Failed    |
 
+    Examples:
+      | partner | label         | value                             | condition |
+      | PTF     | Tracking Reff |                         412748815 | Success   |
+      | OTO     | Payment Code  |              50120240802150479001 | Success   |
+      | SOF     | User Name     | SOF.SSS.MASAMBA.PALOPO            | Success   |
+      | SOF     | User Name     | randomcase,SOF.SSS.MASAMBA.PALOPO | Success   |
+      | PTF     | Receipt No    |               20240731165048PT062 | Success   |
+      | OTO     | Branch Name   | MAKASSAR                          | Success   |
+      | SOF     | User Name     | randomcase,MASAMBA                | Failed    |
+      | PTF     | Tracking Reff | random,20                         | Failed    |
+      | OTO     | Payment Code  | random,64                         | Failed    |
+      | SOF     | User Name     | random,50                         | Failed    |
+      | PTF     | Receipt No    | random,20                         | Failed    |
+      | OTO     | Branch Name   | SAMARINDA                         | Failed    |
+      | PTF     | Tracking Reff | random,21                         | Failed    |
+      | OTO     | Payment Code  | random,65                         | Failed    |
+      | SOF     | User Name     | random,51                         | Failed    |
+      | PTF     | Receipt No    | random,21                         | Failed    |
 
   @setorku_partner_transaction_filter_by_all_field
   Scenario Outline: [SOB SetorKu] Get data transaction using Filter by all field --"<condition>"
@@ -65,6 +68,7 @@ Feature: Setorku Transaction
     * I click field "Branch Name" and fill with "<branch>" on Setorku Partner Transaction
     When I click apply button filter
     Then Datatable show data "SetorKu Partner Transaction"
+
     Examples:
       | tracking  | partner | paycode              | username                 | receipt             | branch  | condition |
       | 413208567 | SOF     | 50220240803178054001 | SOF.SSS.LEUWILIANG.BOGOR | 2024080312591450232 | BOGOR   | Success   |
