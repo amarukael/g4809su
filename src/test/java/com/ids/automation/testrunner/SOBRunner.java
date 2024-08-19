@@ -9,6 +9,7 @@ import org.testng.annotations.AfterSuite;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.service.ExtentService;
+import com.ids.automation.stepdefinitions.sob.Hooks;
 
 import constant.SOBConstant;
 import io.cucumber.junit.Cucumber;
@@ -16,8 +17,8 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsCategory.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_category_add_new", plugin = { "pretty",
+@CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsProduct.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_product_filter", plugin = { "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
@@ -25,7 +26,8 @@ import utility.ExtentReport;
         monochrome = true)
 
 public class SOBRunner {
-    private static String namefile = "[SOB][DGMS][FE] Product Master - Category Add New Category";
+    // private static String namefile = "[SOB][DGMS][FE] Product Master - Category
+    // Add New Category";
     private static String author = "M. Fahmi Amaruddin";
     private static String project = "SOB Automation Reports";
     private static String urlProject = SOBConstant.urlSOB;
@@ -50,16 +52,30 @@ public class SOBRunner {
 
     @AfterClass
     public static void rename() {
-        String oldFilePath = "test-output/Report-Automation_ 13_Aug_24/PDF Report/ExtentPDF.pdf";
-        String newFilePath = "test-output/Report-Automation_ 13_Aug_24/PDF Report/" + namefile + ".pdf";
+        String nameFile = Hooks.getData();
+        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\ExtendPDF.pdf";
+        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\"
+                + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
 
-        // Mencoba merename file
-        if (oldFile.renameTo(newFile)) {
-            System.out.println("File berhasil di-rename.");
-        } else {
-            System.out.println("Gagal merename file.");
+        while (true) {
+            try {
+                if (oldFile.renameTo(newFile)) {
+                    System.out.println("File berhasil di-rename.");
+                    break;
+                } else {
+                    System.out.print(oldFile.exists());
+                    System.out.println("Gagal merename file.");
+                }
+                Thread.sleep(500);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
