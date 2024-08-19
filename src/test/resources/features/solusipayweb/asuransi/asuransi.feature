@@ -67,7 +67,7 @@ Feature: Solusipayweb Standardize Category Name
     Then I click button bayar on payment checkout
     Given I success choose a payment method
     Given Solusipayweb show process payment
-    Then I navigate to check detail transaction with Category "Internet & TV KABEL"
+    Then I navigate to check detail transaction with Category "Internet & TV Kabel"
 
   @transaction_Internet_with_payment_va
   Scenario: [Solusipayweb][Standardize] Category Name - Internet
@@ -104,7 +104,7 @@ Feature: Solusipayweb Standardize Category Name
 
     Examples:
       | category            |
-      | Internet & Tv Kabel |
+      | Internet & TV Kabel |
       | Token Listrik       |
       | Tagihan Listrik     |
       | Pascabayar          |
