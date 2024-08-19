@@ -9,6 +9,7 @@ import org.testng.annotations.AfterSuite;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.service.ExtentService;
+import com.ids.automation.stepdefinitions.solusipayweb.Hooks;
 
 import constant.SolusipayWebConstant;
 import io.cucumber.junit.Cucumber;
@@ -17,7 +18,7 @@ import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features/solusipayweb/asuransi/asuransi.feature", glue = {
-        "com.ids.automation.stepdefinitions.solusipayweb" }, tags = "@transaction_TVcable_with_payment_va", plugin = {
+        "com.ids.automation.stepdefinitions.solusipayweb" }, tags = "@transaction_ehe_with_payment_va", plugin = {
                 "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
@@ -26,7 +27,6 @@ import utility.ExtentReport;
         monochrome = true)
 
 public class SolusipayWebRunner {
-    private static String namefile = "[Solusipayweb][Standardize] Category Name - Atur keuntungan";
     private static String author = "M. Fahmi Amaruddin";
     private static String project = "Solusipay Automation Reports";
     private static String urlProject = SolusipayWebConstant.UrlSolpayWeb;
@@ -51,9 +51,11 @@ public class SolusipayWebRunner {
 
     @AfterClass
     public static void rename() {
+        String nameFile = Hooks.getData();
+        System.out.println(nameFile);
         String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 19_Aug_24\\PDF Report\\ExtendPDF.pdf";
         String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 19_Aug_24\\PDF Report\\"
-                + namefile + ".pdf";
+                + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);
         if (newFile.exists()) {
@@ -75,6 +77,5 @@ public class SolusipayWebRunner {
                 e.printStackTrace();
             }
         }
-
     }
 }
