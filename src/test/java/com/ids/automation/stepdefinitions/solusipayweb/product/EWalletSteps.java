@@ -80,13 +80,4 @@ public class EWalletSteps {
         countImage++;
         solpayWebHelper.delay(2000);
     }
-
-    @When("I choose {string} on {string}")
-    public void iChooseOn(String arg0, String arg1) {
-        ewalletPages.chooseDenom(arg0);
-        screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Ewallet");
-        countImage++;
-        solpayWebHelper.delay(1000);
-    }
 }

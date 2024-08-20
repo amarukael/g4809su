@@ -19,7 +19,8 @@ Feature: E-Wallet
     When Solusipayweb show Success Payment
     Then I can check detail transaction
     And I can check Invoice transaction
+
     Examples:
       | product | nomor        | denom | condition   |
-      | OVO     | 081200000000 | 1     | no discount |
+      | OVO     | 081200000000 |     1 | no discount |
 #      | Shopee Pay New || no discount |

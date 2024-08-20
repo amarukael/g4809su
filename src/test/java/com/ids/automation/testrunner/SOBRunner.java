@@ -26,8 +26,6 @@ import utility.ExtentReport;
         monochrome = true)
 
 public class SOBRunner {
-    // private static String namefile = "[SOB][DGMS][FE] Product Master - Category
-    // Add New Category";
     private static String author = "M. Fahmi Amaruddin";
     private static String project = "SOB Automation Reports";
     private static String urlProject = SOBConstant.urlSOB;
