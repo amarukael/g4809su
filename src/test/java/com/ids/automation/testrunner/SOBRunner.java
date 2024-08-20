@@ -18,7 +18,7 @@ import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsProduct.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_product_filter", plugin = { "pretty",
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_switch_status_product", plugin = { "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
@@ -26,8 +26,6 @@ import utility.ExtentReport;
         monochrome = true)
 
 public class SOBRunner {
-    // private static String namefile = "[SOB][DGMS][FE] Product Master - Category
-    // Add New Category";
     private static String author = "M. Fahmi Amaruddin";
     private static String project = "SOB Automation Reports";
     private static String urlProject = SOBConstant.urlSOB;
@@ -53,8 +51,8 @@ public class SOBRunner {
     @AfterClass
     public static void rename() {
         String nameFile = Hooks.getData();
-        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\ExtendPDF.pdf";
-        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\"
+        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 19_Aug_24\\PDF Report\\ExtendPDF.pdf";
+        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 19_Aug_24\\PDF Report\\"
                 + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);

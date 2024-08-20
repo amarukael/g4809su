@@ -1,23 +1,26 @@
 package com.ids.automation.stepdefinitions.sob;
 
-import com.ids.automation.configuration.BrowserSetup;
-import helper.SOBHelper;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.*;
+import static org.junit.Assert.*;
+
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.ids.automation.configuration.BrowserSetup;
+
+import helper.SOBHelper;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
 import utility.Helper;
-
-import java.time.Duration;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 //import static com.ids.automation.stepDefinitions.sob.SOB_LoginSteps.document;
 
@@ -43,7 +46,7 @@ public class SOBGlobalSteps {
     public void i_click_filter_button(String arg0) {
         setUp();
         waitForAndClickElement(By.xpath("//button[contains(text(), 'FILTER')]"));
-        System.out.println("I'm on Click Filter Button "+arg0);
+        System.out.println("I'm on Click Filter Button " + arg0);
     }
 
     @When("I click apply button filter")
@@ -52,17 +55,18 @@ public class SOBGlobalSteps {
         assertFalse(globalPages.errorField());
         waitForAndClickElement(By.xpath("//button[contains(text(), 'APPLY')]"));
         sobHelper.delay(2000);
-//        document.newPage(); // Add a new page for the rest of the content
+        // document.newPage(); // Add a new page for the rest of the content
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Filter Section");
-//        Helper.addImageToPDF(document, screenshotData);
+        // Helper.addImageToPDF(document, screenshotData);
         System.out.println("Im on Click apply Filter Button");
     }
 
     @Given("I choose {string} partnerID on filter field")
     public void i_choose_partner_id_on_filter_field(String datavalue) {
         setUp();
-        WebElement partnerIdElement = wait.until(ExpectedConditions.elementToBeClickable(By.id("mui-component-select-partnerId")));
+        WebElement partnerIdElement = wait
+                .until(ExpectedConditions.elementToBeClickable(By.id("mui-component-select-partnerId")));
         Actions builder = new Actions(driver);
         builder.moveToElement(partnerIdElement).clickAndHold().perform();
         sobHelper.delay(2000);
@@ -80,7 +84,8 @@ public class SOBGlobalSteps {
     @When("I click button next Page")
     public void i_click_button_next_page() {
         setUp();
-        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Go to next page']")));
+        WebElement button = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Go to next page']")));
         button.click();
         System.out.println("Im on Click Next Page Button");
     }
@@ -134,7 +139,8 @@ public class SOBGlobalSteps {
     @When("I click Yes for Confirmation")
     public void i_click_yes_for_confirmation() {
         setUp();
-        WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'YES')]")));
+        WebElement button = wait
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'YES')]")));
         button.click();
         System.out.println("Im on Yes Confirmation");
     }
@@ -150,11 +156,11 @@ public class SOBGlobalSteps {
     }
 
     @When("I hit {string} Button {string} times")
-    public void i_hit_button_times(String arg0, String arg1) throws Exception{
+    public void i_hit_button_times(String arg0, String arg1) throws Exception {
         setUp();
         Integer intArg1 = Integer.parseInt(arg1);
         sobHelper.delay(500);
-        if (arg0.equals("next")){
+        if (arg0.equals("next")) {
             globalPages.nextDataTable(intArg1);
         } else if (arg0.equals("prev")) {
             globalPages.nextDataTable(intArg1);
@@ -180,14 +186,14 @@ public class SOBGlobalSteps {
             throw new IllegalArgumentException("Username is empty or null");
         }
         loginSteps.setUp();
-        loginSteps.setUpLogin(sobUser, menu +"_"+subMenu);
+        loginSteps.setUpLogin(sobUser, menu + "_" + subMenu);
         setUp();
         homePage.MenuDrawer();
         homePage.openNavMenu(menu, 0, 250, "smooth");
         homePage.openNavSubMenu(subMenu);
         sobHelper.delay(800);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", menu+" - "+subMenu);
+        scenario.attach(screenshotData, "image/png", menu + " - " + subMenu);
         homePage.MenuDrawer();
         sobHelper.delay(1500);
     }
@@ -196,7 +202,7 @@ public class SOBGlobalSteps {
     public void i_fill_from_date_and_to_date_on(String arg0, String arg1, String arg2) {
         i_fill_from_date_on(arg0);
         i_fill_to_date_on(arg1);
-        System.out.println("Successfully fill date on "+arg2);
+        System.out.println("Successfully fill date on " + arg2);
     }
 
     @Given("I fill From Date \\({string}) on {string}")
@@ -219,7 +225,7 @@ public class SOBGlobalSteps {
 
     @Then("Datatable show data {string}")
     public void datatable_show_data(String arg0) throws Exception {
-        assertFalse("Snack bar error appeared",globalPages.errorAlert());
+        assertFalse("Snack bar error appeared", globalPages.errorAlert());
         globalPages.waitDatatableAppear();
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", arg0
@@ -248,7 +254,7 @@ public class SOBGlobalSteps {
         homePage.openNavSubMenu(value[1]);
         sobHelper.delay(800);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", value[1]+" - "+value[1]+" --" + arg0);
+        scenario.attach(screenshotData, "image/png", value[1] + " - " + value[1] + " --" + arg0);
         homePage.MenuDrawer();
         sobHelper.delay(1000);
     }
@@ -257,7 +263,7 @@ public class SOBGlobalSteps {
     public void show_alert_success(String arg0) {
         sobHelper.delay(1000);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Show Alert "+arg0);
+        scenario.attach(screenshotData, "image/png", "Show Alert " + arg0);
         assertTrue("Snack bar Success", globalPages.successAlert());
         assertFalse("Snack bar Error", globalPages.errorAlert());
         sobHelper.delay(200);
@@ -269,5 +275,35 @@ public class SOBGlobalSteps {
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Hit ADD button");
         assertFalse("Hint error appeared", globalPages.errorField());
+    }
+
+    @Then("I Hit Switch Button Product Row {string} to {string}")
+    public void iHitSwitchButtonProductRowToProduct(String arg0, String arg1) throws Exception {
+        setUp();
+        globalPages.scrollDataTabletoLeft(1000);
+        sobHelper.delay(1000);
+        globalPages.waitDatatableAppear();
+        sobHelper.delay(1000);
+        try {
+            globalPages.SwitchButton(arg0, arg1);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Product List");
+        sobHelper.delay(500);
+    }
+
+    @Then("I Hit {string} Button in Status Confirmation and Show Alert")
+    public void iHitButtonInStatusConfirmationAndShowAlert(String arg0) throws Exception {
+        sobHelper.delay(500);
+        globalPages.statusConfirmation(arg0);
+        sobHelper.delay(1000);
+        assertTrue("Snack bar Success", globalPages.successAlert());
+        assertFalse("Snack bar Error", globalPages.errorAlert());
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Product List");
+        sobHelper.delay(2000);
     }
 }

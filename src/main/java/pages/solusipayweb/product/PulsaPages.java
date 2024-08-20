@@ -40,7 +40,17 @@ public class PulsaPages {
     }
 
     public void fillPhoneNumberFieldOnPulsaPage(String phoneNumber) {
-        WebElement phoneNoField = driver.findElement(By.id("input_number"));
+        WebElement phoneNoField = null;
+        try {
+            phoneNoField = driver.findElement(By.id("input_number"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            phoneNoField = driver.findElement(By.id("field_input"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         phoneNoField.click();
         phoneNoField.sendKeys(phoneNumber);
         // typeWithDelay(phoneNoField, phoneNumber);
