@@ -3,6 +3,8 @@ package com.ids.automation.stepdefinitions.sob;
 import static org.junit.Assert.*;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,6 +36,7 @@ public class SOBGlobalSteps {
     SOBGlobalPages globalPages;
     Integer countImage = 1;
     byte[] screenshotData;
+    Map<String, String> dataSwitch = new HashMap<>();
 
     private void setUp() {
         driver = BrowserSetup.getDriver();
@@ -284,6 +287,9 @@ public class SOBGlobalSteps {
         sobHelper.delay(1000);
         globalPages.waitDatatableAppear();
         sobHelper.delay(1000);
+        arg1 = arg1.toUpperCase();
+        dataSwitch.put("Row", arg0);
+        dataSwitch.put("updateTo", arg1);
         try {
             globalPages.SwitchButton(arg0, arg1);
         } catch (Exception e) {
@@ -300,10 +306,31 @@ public class SOBGlobalSteps {
         sobHelper.delay(500);
         globalPages.statusConfirmation(arg0);
         sobHelper.delay(1000);
+        waitButtonSwitched();
+    }
+
+    @Then("I wait button switched")
+    public void waitButtonSwitched() throws Exception {
+        sobHelper.delay(2000);
         assertTrue("Snack bar Success", globalPages.successAlert());
         assertFalse("Snack bar Error", globalPages.errorAlert());
+        String row = dataSwitch.get("Row");
+        String updateTo = dataSwitch.get("updateTo");
+        WebElement checkbox = driver.findElement(By.xpath("//div[@data-id='" + row + "']" +
+                "//input[@type='checkbox']"));
+        switch (updateTo) {
+            case "ACTIVE":
+                wait.until(ExpectedConditions.elementToBeSelected(checkbox));
+                break;
+            case "INACTIVE":
+                wait.until(ExpectedConditions.elementSelectionStateToBe(checkbox, false));
+                break;
+            default:
+                throw new Exception("Invalid argument");
+        }
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Product List");
-        sobHelper.delay(2000);
+        scenario.attach(screenshotData, "image/png", "Switched");
+        sobHelper.delay(500);
     }
+
 }

@@ -193,5 +193,4 @@ public class SOBGlobalPages {
         }
         checkbox.click();
     }
-
 }
