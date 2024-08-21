@@ -69,7 +69,7 @@ public class SOBRunner {
                     System.out.print(oldFile.exists());
                     System.out.println("Gagal merename file.");
                 }
-                Thread.sleep(500);
+                Thread.sleep(1000);
 
             } catch (Exception e) {
                 e.printStackTrace();

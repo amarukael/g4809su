@@ -278,7 +278,7 @@ public class SOBGlobalSteps {
     }
 
     @Then("I Hit Switch Button Product Row {string} to {string}")
-    public void iHitSwitchButtonProductRowToProduct(String arg0, String arg1) throws Exception {
+    public void i_hit_switch_button_product_row_to_product(String arg0, String arg1) throws Exception {
         setUp();
         globalPages.scrollDataTabletoLeft(1000);
         sobHelper.delay(1000);
@@ -296,7 +296,7 @@ public class SOBGlobalSteps {
     }
 
     @Then("I Hit {string} Button in Status Confirmation and Show Alert")
-    public void iHitButtonInStatusConfirmationAndShowAlert(String arg0) throws Exception {
+    public void i_hit_button_in_status_confirmation_and_show_alert(String arg0) throws Exception {
         sobHelper.delay(500);
         globalPages.statusConfirmation(arg0);
         sobHelper.delay(1000);
