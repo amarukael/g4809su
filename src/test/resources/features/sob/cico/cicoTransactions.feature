@@ -6,16 +6,17 @@ Feature: CICO Transaction
     Given I open SOB Website
     When I logged in with username "<username>"
     Then I "<condition>" navigate to CICO Transaction
+
     Examples:
       | condition    | username |
       | Successfully | adminqa2 |
       | Failed       | rhesa    |
 
   @CICO_Transaction_filter_by_date
-  Scenario: Filter data by Date -- Successfully
+  Scenario: Filter data by Date
     Given I am in Menu "CICO" and Sub-Menu "Transaction List"
     * I click filter button on "CICO Transaction"
-    * I fill From Date ("01,01") and To Date ("07,01") on "CICO Transaction"
+    * I fill From Date ("01,06") and To Date ("30,06") on "CICO Transaction"
     When I click apply button filter
     Then Datatable show data "CICO Transaction"
 
@@ -23,10 +24,11 @@ Feature: CICO Transaction
   Scenario Outline: Filter data by Data "<field>"
     Given I am in Menu "CICO" and Sub-Menu "Transaction List"
     * I click filter button on "CICO Transaction"
-    * I fill From Date ("01,01") and To Date ("07,01") on "CICO Transaction"
+    * I fill From Date ("01,06") and To Date ("30,06") on "CICO Transaction"
     * I Click Field "<field>" and Fill With "<value>" on CICO Transaction
     When I click apply button filter
     Then Datatable show data "CICO Transaction"
+
     Examples:
       | field                   | value                |
       | BCI Transaction ID      | IBTT0561704438438174 |
@@ -34,11 +36,11 @@ Feature: CICO Transaction
       | Partner Name            | IDM                  |
       | Merchant Transaction ID | TTPB2401051526440102 |
       | Merchant Name           | INDOMARET            |
-      | Customer ID             | 085208345677         |
+      | Customer ID             |         085208345677 |
       | Customer Name           | RIYANO CARDIN        |
-      | Token                   | 1008811128           |
+      | Token                   |           1008811128 |
       | Transaction Type        | CASHOUT              |
-      | Nominal                 | 100000               |
+      | Nominal                 |               100000 |
       | Status                  | Success              |
 
   @CICO_Transaction_filter_by_data_All_field

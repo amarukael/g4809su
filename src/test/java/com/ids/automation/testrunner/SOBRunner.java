@@ -17,8 +17,8 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsProduct.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_product_filter", plugin = { "pretty",
+@CucumberOptions(features = "src/test/resources/features/sob/cico/cicoTransactions.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@CICO_Transaction_filter_by_date", plugin = { "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
@@ -53,8 +53,8 @@ public class SOBRunner {
     @AfterClass
     public static void rename() {
         String nameFile = Hooks.getData();
-        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\ExtendPDF.pdf";
-        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 16_Aug_24\\PDF Report\\"
+        String oldFilePath = "C:/Users/fahmi.amaruddin/Documents/repo/Github/Automation-UI/test-output/Report-Automation_ 21_Aug_24/PDF Report/ExtendPDF.pdf";
+        String newFilePath = "C:/Users/fahmi.amaruddin/Documents/repo/Github/Automation-UI/test-output/Report-Automation_ 21_Aug_24/PDF Report/"
                 + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);
