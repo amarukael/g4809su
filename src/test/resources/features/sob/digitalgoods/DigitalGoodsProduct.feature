@@ -119,7 +119,7 @@ Feature: Digital Goods Product
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Product on DGMS Product Master
     Then I Hit Switch Button Product Row "<row>" to "<switch>"
-    Then I Hit "<btn>" Button in Status Confirmation and Show Alert
+    Given I Hit "<btn>" Button in Status Confirmation and Show Alert
 
     Examples:
       | row | switch   | btn |

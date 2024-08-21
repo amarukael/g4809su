@@ -17,8 +17,9 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/sob/cico/cicoTransactions.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@CICO_Transaction_filter_by_date", plugin = { "pretty",
+@CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsProduct.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_switch_status_product", plugin = {
+                "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
