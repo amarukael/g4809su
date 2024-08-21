@@ -20,16 +20,8 @@ public class SOBSetorkuPartnerPages {
         PageFactory.initElements(driver, this);
     }
 
-    public void fieldProductId() {
-        driver.findElement(By.id("mui-component-select-partnerId")).click();
-    }
-
-    public void listProductId(String s) {
-        driver.findElement(By.xpath("//li[normalize-space(text())='" + s + "']")).click();
-    }
-
     public void fieldStatus() {
-        driver.findElement(By.id("mui-component-select-status")).click();
+        driver.findElement(By.id("mui-component-select-isActive")).click();
     }
 
     public void listStatus(String s) {

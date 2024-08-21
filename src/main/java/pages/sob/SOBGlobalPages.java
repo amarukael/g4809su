@@ -114,11 +114,12 @@ public class SOBGlobalPages {
         sobHelper.delay(800);
     }
 
-    public void inputText(String arg0, String arg1) {
+    public String inputText(String arg0, String arg1) {
         WebElement field = driver.findElement(By.xpath("(//label[text()='" + arg0 + "']/following::input)[1]"));
         field.click();
         field.clear();
         field.sendKeys(arg1);
+        return arg1;
     }
 
     public boolean errorAlert() {
@@ -170,9 +171,11 @@ public class SOBGlobalPages {
             System.out.println("Skiping");
         } else {
             WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + arg0 + "')]"));
-            WebElement container = label.findElement(By.xpath("./following-sibling::div//div[@role='button']"));
-            sobHelper.delay(500);
+            WebElement container = label.findElement(
+                    By.xpath("./following-sibling::div//div[@role='button' and @aria-haspopup='listbox']"));
             container.click();
+            sobHelper.delay(500);
+
             sobHelper.delay(500);
             driver.findElement(By.xpath("//li[normalize-space(text())='" + arg1 + "']")).click();
         }

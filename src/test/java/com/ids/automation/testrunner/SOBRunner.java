@@ -17,8 +17,9 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/sob/setorku/SetorkuPartner.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@setorku_artner_filter_by_date", plugin = { "pretty",
+@CucumberOptions(features = "src/test/resources/features/sob/setorku/SetorkuPaymentCodeList.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@setorku_payment_code_list_filter_by_field", plugin = {
+                "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
