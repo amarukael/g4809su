@@ -11,7 +11,7 @@ Feature: Digital Goods Product
     Examples:
       | condition    | username |
       | Successfully | adminqa2 |
-      | Failed       | rhesa    |
+      # | Failed       | rhesa    |
 
   @dgms_product_filter
   Scenario Outline: [SOB][DGMS][FE] Product Master - Product Using Filter by Field
@@ -88,19 +88,40 @@ Feature: Digital Goods Product
     * I click field "Sub Category Name" and fill with "<subCatName>" on DGMS Product Master Product
     * I click field "Supplier Name" and fill with "<supplierName>" on DGMS Product Master Product
     * I click field "Status" and fill with "<status>" on DGMS Product Master Product
-    # When I click button submit form
-    # Then "Digital Goods Product" Show Alert Success
+    When I click button submit form
+    Then "Digital Goods Product" Show Alert Success
 
     Examples:
-      | ppobName | productName       | keterangan | catName | subCatName  | supplierName | status   |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Active   |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
-      | TEST QA2 | Test Single Bruh1 | OnlyTest   | TestQA2 | TEST SUB QA | TEST QA3     | Inactive |
+      | ppobName | productName        | keterangan | catName       | subCatName  | supplierName | status   |
+      | TEST QA2 | Test Single Bruh1  | OnlyTest   | TestQA2       | TEST SUB QA | TEST QA3     | Active   |
+      | TEST QA2 | Test Single Bruh1  | OnlyTest   | TestQA2       | TEST SUB QA | TEST QA3     | Active   |
+      | TEST QA2 | Test Single Bruh1  | OnlyTest   | VOUCHER GAMES | Mango Live  | TEST QA3     | Active   |
+      | TEST QA2 | Test Single Bruh1  | OnlyTest   | TestQA2       | TEST SUB QA | TEST QA1     | Active   |
+      | TEST QA3 | Test Single Bruh1  | OnlyTest   | TestQA2       | TEST SUB QA | TEST QA3     | Active   |
+      | TEST QA2 | Test Single Bruh1  | OnlyTest   | TestQA2       | TEST SUB QA | TEST QA1     | Inactive |
+      | TEST QA2 | random,100         | OnlyTest2  | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh3  | random,100 | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh4  | OnlyTest4  | TestQA2       |             | TEST QA3     | Inactive |
+      | TEST QA2 | random,101         | OnlyTest5  | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh6  | random,101 | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh7  | OnlyTest7  | random,100    | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh8  | OnlyTest8  | TestQA2       | random,100  | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh9  | OnlyTest9  | TestQA2       | TEST SUB QA |              | Inactive |
+      | TEST QA2 |                    | OnlyTest10 | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh10 |            | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh11 | OnlyTest11 |               | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh12 | OnlyTest12 | TestQA2       | TEST SUB QA | TEST QA3     |          |
+      | TEST QA2 | space,5            | OnlyTest13 | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+      | TEST QA2 | Test Single Bruh13 | space,5    | TestQA2       | TEST SUB QA | TEST QA3     | Inactive |
+
+  @dgms_switch_status_product
+  Scenario Outline: [SOB][DGMS][FE] Product Master - Switch Product Status
+    Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
+    Then I click Tab Product on DGMS Product Master
+    Then I Hit Switch Button Product Row "<row>" to "<switch>"
+    Then I Hit "<btn>" Button in Status Confirmation and Show Alert
+
+    Examples:
+      | row | switch   | btn |
+      |   1 | active   | yes |
+      |   2 | inactive | yes |

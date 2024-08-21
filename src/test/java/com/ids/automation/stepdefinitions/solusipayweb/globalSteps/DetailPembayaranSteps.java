@@ -1,13 +1,15 @@
 package com.ids.automation.stepdefinitions.solusipayweb.globalSteps;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ids.automation.configuration.BrowserSetup;
+
 import helper.SolusipayWebHelper;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.solusipayweb.globalpages.DetailPembayaranPages;
 import utility.Helper;
 
@@ -24,16 +26,16 @@ public class DetailPembayaranSteps {
         DetailPembayaranSteps.scenario = scenario;
     }
 
-    public void setUpDetailPembayaran(){
-        driver = BrowserSetup.getDriver();
+    public void setUpDetailPembayaran() {
+        driver = BrowserSetup.getDriverMobile();
 
-        if(detailPembayaran == null){
+        if (detailPembayaran == null) {
             detailPembayaran = new DetailPembayaranPages(driver);
         }
     }
 
     @When("I click button pilih pembayaran")
-    public void iClickButtonPilihPembayaran(){
+    public void iClickButtonPilihPembayaran() {
         setUpDetailPembayaran();
         solpayWebHelper.delay(1000);
         detailPembayaran.hitBtnPilihPembayaran();
@@ -44,7 +46,7 @@ public class DetailPembayaranSteps {
     }
 
     @When("I now on detail pembayaran top up game page")
-    public void iNowOnDetailPembayaranTopUpGame(){
+    public void iNowOnDetailPembayaranTopUpGame() {
         setUpDetailPembayaran();
         detailPembayaran.vrfyDetailPembayaranTopUpGame();
         solpayWebHelper.delay(850);
@@ -54,7 +56,7 @@ public class DetailPembayaranSteps {
     }
 
     @Then("I now on detail pembayaran voucher game page")
-    public void iNowOnDetailPembayaranVoucherGamePage(){
+    public void iNowOnDetailPembayaranVoucherGamePage() {
         setUpDetailPembayaran();
         detailPembayaran.vrfyDetailPembayaranVoucherGame();
         solpayWebHelper.delay(850);

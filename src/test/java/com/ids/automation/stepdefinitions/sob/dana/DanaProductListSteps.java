@@ -1,23 +1,24 @@
 package com.ids.automation.stepdefinitions.sob.dana;
 
+import static org.testng.Assert.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.openqa.selenium.WebDriver;
+
 import com.ids.automation.configuration.BrowserSetup;
 import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
+
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
 import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
 import pages.sob.dana.SOBDanaProductListPages;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import utility.Helper;
-
-import static org.testng.Assert.*;
 
 public class DanaProductListSteps {
 
@@ -31,7 +32,6 @@ public class DanaProductListSteps {
     private byte[] screenshotData;
     Integer countImage = 1;
 
-
     @Then("I {string} navigate to Dana Product List")
     public void i_navigate_to_Dana_product_list(String condition) {
         setUpPordList();
@@ -44,7 +44,7 @@ public class DanaProductListSteps {
         homePage.openNavSubMenu("Product");
         sobHelper.delay(800);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Dana - Product List "+condition);
+        scenario.attach(screenshotData, "image/png", "Dana - Product List " + condition);
         homePage.MenuDrawer();
         sobHelper.delay(1000);
     }
@@ -64,8 +64,9 @@ public class DanaProductListSteps {
         countImage++;
         sobHelper.delay(1000);
     }
+
     @Then("Dana Datatable show Product List")
-    public void DanaDatatableShowProductList(){
+    public void DanaDatatableShowProductList() {
         prodListPage.waitDatatableDanaAppear();
         globalPages.scrollToBottom();
         screenshotData = Helper.takeScreenshot(driver);
@@ -80,11 +81,11 @@ public class DanaProductListSteps {
     @Then("Dana Datatable {string} show Product List")
     public void dana_datatable_show_product_list(String arg0) {
         Boolean bool = prodListPage.getAlert();
-        if (bool.equals(true)){
+        if (bool.equals(true)) {
             screenshotData = Helper.takeScreenshot(driver);
-            scenario.attach(screenshotData, "image/png", "Dana - Product List" +arg0+ countImage);
+            scenario.attach(screenshotData, "image/png", "Dana - Product List" + arg0 + countImage);
             countImage++;
-        }else {
+        } else {
             prodListPage.waitDatatableDanaAppear();
             globalPages.scrollToBottom();
             screenshotData = Helper.takeScreenshot(driver);
@@ -156,10 +157,10 @@ public class DanaProductListSteps {
     }
 
     @Then("I Hit Switch Button Product Row {string} to {string} Product")
-    public void iHitSwitchButtonProductRowToProduct(String arg0, String arg1){
+    public void iHitSwitchButtonProductRowToProduct(String arg0, String arg1) {
         prodListPage.waitDatatableDanaAppear();
         try {
-            prodListPage.SwitchButton(arg0,arg1);
+            prodListPage.SwitchButton(arg0, arg1);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -169,7 +170,7 @@ public class DanaProductListSteps {
         sobHelper.delay(500);
     }
 
-    @Then("I Hit {string} Button in Status Confirmation and Show Alert")
+    @Then("I Hit {string} Button in Status Confirmation and Show Alert on Dana Product")
     public void iHitButtonInStatusConfirmationAndShowAlert(String arg0) {
         sobHelper.delay(500);
         try {
@@ -182,6 +183,7 @@ public class DanaProductListSteps {
         scenario.attach(screenshotData, "image/png", "Product List");
         sobHelper.delay(1000);
     }
+
     @Then("I Hit Size Datatable Button and Select {string}")
     public void iHitSizeDatatableButtonAndSelect(String arg0) {
         sobHelper.delay(500);

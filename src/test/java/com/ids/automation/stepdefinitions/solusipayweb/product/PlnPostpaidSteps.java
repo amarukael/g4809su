@@ -1,13 +1,16 @@
 package com.ids.automation.stepdefinitions.solusipayweb.product;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ids.automation.configuration.BrowserSetup;
+
 import constant.SolusipayWebConstant;
 import helper.SolusipayWebHelper;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import pages.solusipayweb.globalpages.MethodPaymentPages;
 import pages.solusipayweb.globalpages.SolusipayWebPages;
 import pages.solusipayweb.product.PlnPostpaidPages;
@@ -29,12 +32,14 @@ public class PlnPostpaidSteps {
     public void afterScenario(Scenario scenario) {
         PlnPostpaidSteps.scenario = scenario;
     }
-    public void setUpSolpayWebPLNPostpaid(){
-        driver = BrowserSetup.getDriver();
+
+    public void setUpSolpayWebPLNPostpaid() {
+        driver = BrowserSetup.getDriverMobile();
         solpayWeb = new SolusipayWebPages(driver);
         plnPostpaid = new PlnPostpaidPages(driver);
         methodpayment = new MethodPaymentPages(driver);
     }
+
     @When("I navigate to solusipayweb PLN Postpaid")
     public void i_navigate_to_solusipayweb_pln_postpaid() {
         setUpSolpayWebPLNPostpaid();
@@ -68,13 +73,14 @@ public class PlnPostpaidSteps {
 
     @When("I click button bayar on Pln Post")
     public void iClickButtonBayarOnPlnPost() {
+        setUpSolpayWebPLNPostpaid();
         solpayWebHelper.delay(5500);
         plnPostpaid.btnSubmit();
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Solusipay Web Page - Hit Button Bayar");
     }
 
-    // Start --  Negatif Steps //
+    // Start -- Negatif Steps //
 
     @Then("I can see {string} snackbar massage")
     public void i_can_see_snackbar_massage(String string) {

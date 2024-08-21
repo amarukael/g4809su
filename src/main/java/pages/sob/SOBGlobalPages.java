@@ -1,6 +1,8 @@
 package pages.sob;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,6 +20,7 @@ public class SOBGlobalPages {
     WebDriver driver;
     SOBHelper sobHelper = new SOBHelper();
     WebDriverWait wait;
+    Map<String, String> dataSwitch = new HashMap<>();
 
     public SOBGlobalPages(WebDriver driver) {
         this.driver = driver;
@@ -111,11 +114,12 @@ public class SOBGlobalPages {
         sobHelper.delay(800);
     }
 
-    public void inputText(String arg0, String arg1) {
+    public String inputText(String arg0, String arg1) {
         WebElement field = driver.findElement(By.xpath("(//label[text()='" + arg0 + "']/following::input)[1]"));
         field.click();
         field.clear();
         field.sendKeys(arg1);
+        return arg1;
     }
 
     public boolean errorAlert() {
@@ -138,6 +142,19 @@ public class SOBGlobalPages {
         }
     }
 
+    public void statusConfirmation(String arg0) throws Exception {
+        switch (arg0.toUpperCase()) {
+            case "YES":
+                driver.findElement(By.xpath("//button[text()='YES']")).click();
+                break;
+            case "NO":
+                driver.findElement(By.xpath("//button[text()='NO']")).click();
+                break;
+            default:
+                throw new Exception("Invalid argument");
+        }
+    }
+
     public boolean errorField() {
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         try {
@@ -154,12 +171,27 @@ public class SOBGlobalPages {
             System.out.println("Skiping");
         } else {
             WebElement label = driver.findElement(By.xpath("//label[contains(text(), '" + arg0 + "')]"));
-            WebElement container = label.findElement(By.xpath("./following-sibling::div//div[@role='button']"));
-            sobHelper.delay(500);
+            WebElement container = label.findElement(
+                    By.xpath("./following-sibling::div//div[@role='button' and @aria-haspopup='listbox']"));
             container.click();
+            sobHelper.delay(500);
+
             sobHelper.delay(500);
             driver.findElement(By.xpath("//li[normalize-space(text())='" + arg1 + "']")).click();
         }
+    }
+
+    public void SwitchButton(String arg0, String arg1) throws Exception {
+        WebElement checkbox = driver.findElement(By.xpath("//div[@data-id='" + arg0 + "']" +
+                "//input[@type='checkbox']"));
+        boolean checked = checkbox.isSelected();
+        arg1 = arg1.toUpperCase();
+        dataSwitch.put("Row", arg0);
+        dataSwitch.put("updateTo", arg1);
+        if ((arg1.equals("ACTIVE") && checked) || (arg1.equals("INACTIVE") && !checked)) {
+            throw new Exception("Switch Row " + arg0 + " Already " + arg1);
+        }
+        checkbox.click();
     }
 
 }
