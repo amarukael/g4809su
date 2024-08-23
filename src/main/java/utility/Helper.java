@@ -1,15 +1,15 @@
 package utility;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.SecureRandom;
-
 //import com.itextpdf.text.Document;
 //import com.itextpdf.text.Image;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.SecureRandom;
 
 public class Helper {
     private static final String num = "0123456789";
@@ -27,19 +27,19 @@ public class Helper {
         return srcFile;
     }
 
-    // public static void addImageToPDF(Document document, byte[] srcFile) {
-    // try {
-    // // Create an Image instance from the byte array
-    // Image img = Image.getInstance(srcFile);
-    // img.scaleToFit(650, 650); // Adjust image size as needed
-    // img.setAbsolutePosition(110, 200);
-    //
-    // document.add(img);
-    // document.newPage(); // Add a new page for the rest of the content
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
+//    public static void addImageToPDF(Document document, byte[] srcFile) {
+//        try {
+//            // Create an Image instance from the byte array
+//            Image img = Image.getInstance(srcFile);
+//            img.scaleToFit(650, 650); // Adjust image size as needed
+//            img.setAbsolutePosition(110, 200);
+//
+//            document.add(img);
+//            document.newPage(); // Add a new page for the rest of the content
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public static String getCurrentDirectory() {
         return System.getProperty("user.dir");
@@ -51,7 +51,8 @@ public class Helper {
         return filePath.toString();
     }
 
-    public static String check_file_exist(String filename) {
+    public static String check_file_exist(String filename)
+    {
         String home = System.getProperty("user.home");
         String file_name = filename;
         String file_with_location = home + "\\Downloads\\" + file_name;
@@ -115,10 +116,10 @@ public class Helper {
         return sources[random.nextInt(sources.length)];
     }
 
-    public static void sleep(int milliSecond) {
+    public static void sleep(int milliSecond){
         try {
             Thread.sleep(milliSecond);
-        } catch (Exception e) {
+        }catch (Exception e){
             e.printStackTrace();
         }
     }

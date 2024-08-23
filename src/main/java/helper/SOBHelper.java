@@ -1,5 +1,8 @@
 package helper;
 
+import constant.SOBConstant;
+import org.apache.commons.lang.StringUtils;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,12 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.lang.StringUtils;
-
-import constant.SOBConstant;
-
 public class SOBHelper {
-    private static final SecureRandom random = new SecureRandom();
+    private static SecureRandom random = new SecureRandom();
     private String envTest = SOBConstant.envTes;
     private String pathExtendProperties = "src/test/resources/extent.properties";
 

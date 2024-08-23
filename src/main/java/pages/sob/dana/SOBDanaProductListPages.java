@@ -14,6 +14,7 @@ import pages.sob.SOBHomePages;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class SOBDanaProductListPages {
     Gson gson = new Gson();
@@ -44,7 +45,7 @@ public class SOBDanaProductListPages {
     }
     public boolean getDataTable() {
         try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+            driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
             WebElement dataTable = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.xpath("(//div[@class='MuiDataGrid-cellContent'])[1]")));
             if (dataTable.isDisplayed()) {
@@ -56,14 +57,14 @@ public class SOBDanaProductListPages {
         return false;
     }
     public Integer getRowsDataTable() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         WebElement dataTable = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//div[contains(@class,'MuiDataGrid-root MuiDataGrid-root--densityStandard')]")));
         Integer result = Integer.parseInt(dataTable.getAttribute("aria-rowcount")) - 1;
         return result;
     }
     public Integer getRowsPerPage() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         WebElement rowsPerPage = wait.until(ExpectedConditions.presenceOfElementLocated(
                 By.xpath("//p[@class='MuiTablePagination-displayedRows css-m2ckgc']")));
         Integer idx = rowsPerPage.getText().indexOf("of ") + 3;
@@ -117,7 +118,7 @@ public class SOBDanaProductListPages {
         if (Field.equals("mui-component-select-isActive")) {
             WebElement transIdField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(Field)));
             transIdField.click();
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+            driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
             transIdField.findElement(By.xpath("//li[@data-value='" + value + "']")).click();
         } else {
             WebElement transIdField = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(Field)));
