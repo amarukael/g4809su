@@ -17,8 +17,8 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features/sob/digitalgoods/DigitalGoodsProduct.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_switch_status_product", plugin = {
+@CucumberOptions(features = "src\\test\\resources\\features\\sob\\setorku\\SetorkuProduct.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@setorku_product_add_product", plugin = {
                 "pretty",
                 // "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
@@ -52,8 +52,8 @@ public class SOBRunner {
     @AfterClass
     public static void rename() {
         String nameFile = Hooks.getData();
-        String oldFilePath = "C:/Users/fahmi.amaruddin/Documents/repo/Github/Automation-UI/test-output/Report-Automation_ 21_Aug_24/PDF Report/ExtendPDF.pdf";
-        String newFilePath = "C:/Users/fahmi.amaruddin/Documents/repo/Github/Automation-UI/test-output/Report-Automation_ 21_Aug_24/PDF Report/"
+        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 23_Aug_24\\PDF Report\\ExtentPDF.pdf";
+        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 23_Aug_24\\PDF Report\\"
                 + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);
@@ -61,20 +61,15 @@ public class SOBRunner {
             newFile.delete();
         }
 
-        while (true) {
-            try {
-                if (oldFile.renameTo(newFile)) {
-                    System.out.println("File berhasil di-rename.");
-                    break;
-                } else {
-                    System.out.print(oldFile.exists());
-                    System.out.println("Gagal merename file.");
-                }
-                Thread.sleep(1000);
-
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (oldFile.renameTo(newFile)) {
+                System.out.println("File berhasil di-rename.");
+            } else {
+                System.out.println("Gagal merename file.");
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -39,21 +39,35 @@ Feature: Setorku Product
   Scenario Outline: [SOB SetorKu] Get data product using Filter by all field
     Given I am in Menu "SetorKu" and Sub-Menu "Product"
     * I click filter button on "SetorKu Product"
-    * I fill From Date ("01,01,2019") and To Date ("30,12") on "SetorKu Product"
+    * I click field "Company Description" and fill with "<desc>" on Setorku Product
     * I click field "Product Name" and fill with "<name>" on Setorku Product
-    * I click field "Status" and fill with "<status>" on Setorku Product
     When I click apply button filter
     Then Datatable show data "SetorKu Product"
 
     Examples:
-      | name      | status   |
-      | Test post | Active   |
-      | Test post | Inactive |
-      | tev       | Active   |
+      | desc      | name              |
+      | OTO       | Oto finance Mobil |
+      | OT        | Oto finance Mobil |
+      | OTO       | Oto               |
+      | random,45 | Oto finance Mobil |
+      | OTO       | random,100        |
 
   @setorku_product_add_product
   Scenario Outline: [SOB SetorKu] Add Product
     Given I am in Menu "SetorKu" and Sub-Menu "Product"
+    * I click add product button on page
+    * I click field "Company ID" and fill with "<compID>" on Setorku Product
+    * I click field "Company Description" and fill with "<compDesc>" on Setorku Product
+    * I click field "Product ID" and fill with "<prodId>" on Setorku Product
+    * I click field "Product Name" and fill with "<prodName>" on Setorku Product
+    * I click field "Prefix" and fill with "<prefix>" on Setorku Product
+    * I click field "Secret Key" and fill with "<secret>" on Setorku Product
+    When I click button submit form
+    Then "SetorKu Product" Show Alert Success
+
+    Examples:
+      | compID | compDesc | prodId | prodName | prefix | secret    |
+      |    666 | itsDesc  |    666 | itsName  |    666 | itsSecret |
 
   @setorku_product_change_status_product
   Scenario Outline: [SOB SetorKu] Change status product

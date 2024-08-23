@@ -143,16 +143,10 @@ public class SOBGlobalPages {
     }
 
     public void statusConfirmation(String arg0) throws Exception {
-        switch (arg0.toUpperCase()) {
-            case "YES":
-                driver.findElement(By.xpath("//button[text()='YES']")).click();
-                break;
-            case "NO":
-                driver.findElement(By.xpath("//button[text()='NO']")).click();
-                break;
-            default:
-                throw new Exception("Invalid argument");
-        }
+        driver.findElement(By
+                .xpath("//button[contains(translate(text(),'ABCDEFGHIJKLMNOPURSTUWXYZ','abcdefghijklmnopurstuwxyz'), '"
+                        + arg0 + "')]"))
+                .click();
     }
 
     public boolean errorField() {
@@ -193,4 +187,5 @@ public class SOBGlobalPages {
         }
         checkbox.click();
     }
+
 }

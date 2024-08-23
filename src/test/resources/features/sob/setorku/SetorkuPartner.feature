@@ -56,11 +56,45 @@ Feature: Setorku Partner
   @setorku_product_add_partner
   Scenario Outline: [SOB SetorKu] Add Partner
     Given I am in Menu "SetorKu" and Sub-Menu "Partner"
+    When I click add partner button on page
+    * I click field "Partner ID" and fill with "<id>" on Setorku Partner
+    * I click field "Partner Name" and fill with "<name>" on Setorku Partner
+    * I click field "Status" and fill with "<status>" on Setorku Partner
+    When I click button submit form
+    Then "SetorKu partner" Show Alert Success
+
+    Examples:
+      | id        | name       | status   |
+      | ATQ       | ATEST QA   | Active   |
+      | ATQ       | ATEST QA   | Active   |
+      | ATQ       | ATEST QA1  | Active   |
+      | ATQ1      | ATEST QA   | Active   |
+      | random,20 | ATEST QA2  | Inactive |
+      | ATQ2      | random,100 | Inactive |
+      | random,21 | random,101 | Inactive |
+      | space,5   | ATEST QA3  | Inactive |
+      | ATQ3      | space,20   | Inactive |
+      | space,6   | space,21   |          |
 
   @setorku_product_change_status_partner
   Scenario Outline: [SOB SetorKu] Change status partner
     Given I am in Menu "SetorKu" and Sub-Menu "Partner"
+    Then I Hit Switch Button Product Row "<row>" to "<switch>"
+    Given I Hit "<btn>" Button in Status Confirmation and Show Alert
+
+    Examples:
+      | row | switch   | btn |
+      |   1 | active   | yes |
+      |   2 | inactive | yes |
 
   @setorku_product_delete_partner
   Scenario Outline: [SOB SetorKu] Delete Partner
     Given I am in Menu "SetorKu" and Sub-Menu "Partner"
+    When I hit icon trash can on row "<row>"
+    # Then I Hit "<btn>" Button in Status Confirmation
+    # Given SetorKu partner "<snackbar>" snackbar success
+
+    Examples:
+      | row | btn    | snackbar |
+      |   1 | delete | Show     |
+      |   2 | cancel | Not Show |

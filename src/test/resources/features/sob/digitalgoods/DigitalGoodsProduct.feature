@@ -120,6 +120,7 @@ Feature: Digital Goods Product
     Then I click Tab Product on DGMS Product Master
     Then I Hit Switch Button Product Row "<row>" to "<switch>"
     Given I Hit "<btn>" Button in Status Confirmation and Show Alert
+    Then I wait button switched
 
     Examples:
       | row | switch   | btn |

@@ -121,6 +121,20 @@ public class SOBGlobalSteps {
         System.out.println("Im on click add");
     }
 
+    @Given("I click add partner button on page")
+    public void i_click_add_partner_button_on_page() {
+        setUp();
+        waitForAndClickElement(By.xpath("//button[contains(text(), 'ADD PARTNER')]"));
+        System.out.println("Im on click add");
+    }
+
+    @Given("I click add product button on page")
+    public void i_click_add_product_button_on_page() {
+        setUp();
+        waitForAndClickElement(By.xpath("//button[contains(text(), 'Add Product')]"));
+        System.out.println("Im on click add");
+    }
+
     @When("I click Save Data Button")
     public void i_click_save_data_button() {
         setUp();
@@ -213,7 +227,7 @@ public class SOBGlobalSteps {
         String[] value = sDate.split(",");
         globalPages.fillFromDate(value);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Filter Date");
+        scenario.attach(screenshotData, "image/png", "Filter Date : " + sDate);
         sobHelper.delay(500);
     }
 
@@ -222,7 +236,7 @@ public class SOBGlobalSteps {
         String[] value = sDate.split(",");
         globalPages.fillToDate(value);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Filter Date");
+        scenario.attach(screenshotData, "image/png", "Filter Date : " + sDate);
         sobHelper.delay(500);
     }
 
@@ -301,15 +315,17 @@ public class SOBGlobalSteps {
         sobHelper.delay(500);
     }
 
-    @Then("I Hit {string} Button in Status Confirmation and Show Alert")
-    public void i_hit_button_in_status_confirmation_and_show_alert(String arg0) throws Exception {
+    @Then("I Hit {string} Button in Status Confirmation")
+    public void i_hit_button_in_status_confirmation(String arg0) throws Exception {
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Confirmation");
         sobHelper.delay(500);
+        dataSwitch.put("btn", arg0);
         globalPages.statusConfirmation(arg0);
         sobHelper.delay(1000);
-        waitButtonSwitched();
     }
 
-    @Then("I wait button switched")
+    @Then("I wait snackbar show and button switched")
     public void waitButtonSwitched() throws Exception {
         sobHelper.delay(2000);
         assertTrue("Snack bar Success", globalPages.successAlert());

@@ -10,29 +10,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import helper.SOBHelper;
 
-public class SOBSetorkuPartnerPages {
+public class SOBSetorkuPaymentCodeListPages {
     WebDriver driver;
     WebDriverWait wait;
     SOBHelper sobHelper = new SOBHelper();
 
-    public SOBSetorkuPartnerPages(WebDriver driver) {
+    public SOBSetorkuPaymentCodeListPages(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
     }
 
-    public void fieldStatus() {
-        driver.findElement(By.id("mui-component-select-isActive")).click();
-    }
-
-    public void listStatus(String s) {
-        driver.findElement(By.xpath("//li[normalize-space(text())='" + s + "']")).click();
-    }
-
-    public void trashCan(String arg0) {
+    public void detailPaymentCode(String s) {
         try {
-            WebElement button = driver.findElement(By.xpath("//div[@data-id='" + arg0 + "']" +
-                    "//button[contains(@class, 'MuiButtonBase-root MuiButton-root')]"));
+            WebElement button = driver.findElement(By.xpath("//div[@data-id='" + s + "']" +
+                    "//button[@aria-label='edit']"));
             button.click();
         } catch (Exception e) {
             e.printStackTrace();

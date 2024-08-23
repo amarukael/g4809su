@@ -7,15 +7,18 @@ import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
 
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
+import pages.sob.setorku.SOBSetorkuPaymentCodeListPages;
 import utility.Helper;
 
 public class SetorkuPaymentCodeListSteps {
     static WebDriver driver;
     SOBHomePages homePage;
     SOBGlobalPages globalPages;
+    SOBSetorkuPaymentCodeListPages paymentCodeListPages;
     SOBHelper sobHelper = new SOBHelper();
     Scenario scenario = SOBLoginSteps.scenario;
     private byte[] screenshotData;
@@ -25,6 +28,7 @@ public class SetorkuPaymentCodeListSteps {
         driver = BrowserSetup.getDriver();
         homePage = new SOBHomePages(driver);
         globalPages = new SOBGlobalPages(driver);
+        paymentCodeListPages = new SOBSetorkuPaymentCodeListPages(driver);
     }
 
     @Then("I click field {string} and fill with {string} on Setorku Payment Code List")
@@ -33,7 +37,9 @@ public class SetorkuPaymentCodeListSteps {
         String[] value = arg1.split(",");
         sobHelper.delay(500);
         if (arg0.equalsIgnoreCase("Product Name")) {
-            globalPages.dropList(arg0, arg1);
+            if (!arg1.isEmpty()) {
+                globalPages.dropList(arg0, arg1);
+            }
         } else {
             if (value[0].equalsIgnoreCase("random")) {
                 arg1 = globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
@@ -53,4 +59,14 @@ public class SetorkuPaymentCodeListSteps {
         scenario.attach(screenshotData, "image/png", "Field : " + arg0 + "\nValue : " + arg1);
         sobHelper.delay(500);
     }
+
+    @Given("I click detail Payment Code List on row {string}")
+    public void I_click_detail_Payment_Code_List_on_row(String s) {
+        setUpPaymentCodeList();
+        paymentCodeListPages.detailPaymentCode(s);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Detail payment Code");
+        sobHelper.delay(1000);
+    }
+
 }
