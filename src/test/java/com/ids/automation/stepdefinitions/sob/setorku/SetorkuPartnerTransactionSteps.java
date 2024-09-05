@@ -41,13 +41,13 @@ public class SetorkuPartnerTransactionSteps {
             sobSetorkuPartnerTransactionPages.listBranch(value[0]);
         } else {
             if (value[0].equalsIgnoreCase("random")) {
-                globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
+                arg1 = globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
             } else if (value[0].equalsIgnoreCase("number")) {
-                globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
+                arg1 = globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
             } else if (value[0].equals("randomcase")) {
-                globalPages.inputText(arg0, sobHelper.toRandomCase(value[1]));
+                arg1 = globalPages.inputText(arg0, sobHelper.toRandomCase(value[1]));
             } else {
-                globalPages.inputText(arg0, value[0]);
+                arg1 = globalPages.inputText(arg0, value[0]);
             }
         }
         screenshotData = Helper.takeScreenshot(driver);

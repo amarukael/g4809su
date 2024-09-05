@@ -70,13 +70,17 @@ public class DigitalGoodsProductSteps {
             assertFalse("No Options", productPages.checkNoOption());
             new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
         } else if (arg0.equalsIgnoreCase("Sub Category Name")) {
-            productPages.listSubCategory(arg1);
-            if (productPages.checkNoOption()) {
-                screenshotData = Helper.takeScreenshot(driver);
-                scenario.attach(screenshotData, "image/png", "Filter Section");
+            if (!arg1.isEmpty()) {
+                productPages.listSubCategory(arg1);
+                if (productPages.checkNoOption()) {
+                    screenshotData = Helper.takeScreenshot(driver);
+                    scenario.attach(screenshotData, "image/png", "Filter Section");
+                }
+                assertFalse("No Options", productPages.checkNoOption());
+                new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
+            } else {
+                System.out.println("Skip");
             }
-            assertFalse("No Options", productPages.checkNoOption());
-            new Actions(driver).keyDown(Keys.ARROW_DOWN).sendKeys(Keys.ENTER).perform();
         } else if (arg0.equalsIgnoreCase("Status") || arg0.equalsIgnoreCase("Supplier Name")
                 || arg0.equalsIgnoreCase("PPOB ID - PPOB Name")) {
             globalPages.dropList(arg0, arg1);

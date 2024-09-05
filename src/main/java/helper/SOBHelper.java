@@ -1,20 +1,30 @@
 package helper;
 
-import constant.SOBConstant;
-import org.apache.commons.lang.StringUtils;
-
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import constant.SOBConstant;
+
 public class SOBHelper {
     private static SecureRandom random = new SecureRandom();
     private String envTest = SOBConstant.envTes;
     private String pathExtendProperties = "src/test/resources/extent.properties";
+    private Map<String, String> dataStore = new HashMap<>();
 
     public Map<String, String> getUserCredentials(String user) {
         Map<String, Map<String, String>> userCredentialsMap = new HashMap<>();
@@ -32,6 +42,7 @@ public class SOBHelper {
         userCredentialsMap.put("pettycashpartner", createUserCredentials("pettycashpartner", "Pettycash_123"));
         userCredentialsMap.put("aksesmu", createUserCredentials("aksesmubas", "Aksesmu!23"));
         userCredentialsMap.put("adminstg", createUserCredentials("admin@gmail.com", "Test_1234"));
+        userCredentialsMap.put("testotoqa", createUserCredentials("testotoQA", "a"));
 
         // Return the user credentials based on the provided user identifier
         return userCredentialsMap.get(user);
@@ -254,6 +265,45 @@ public class SOBHelper {
         }
 
         return sb.toString();
+    }
+
+    public void saveData(String key, String value) {
+        dataStore.put(key, value);
+    }
+
+    public String getData(String key) {
+        return dataStore.get(key);
+    }
+
+    public String generateName() {
+        try {
+            // URL untuk API RandomUser.me
+            URL url = new URL("https://randomuser.me/api/");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Membaca response dari API
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
+            JsonArray results = jsonResponse.getAsJsonArray("results");
+            JsonObject user = results.get(0).getAsJsonObject();
+            JsonObject login = user.getAsJsonObject("login");
+            String username = login.get("username").getAsString();
+
+            return username;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.toString();
+        }
     }
 
 }

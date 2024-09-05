@@ -57,24 +57,26 @@ public class DigitalGoodsCategorySteps {
     @Then("I click field {string} and fill with {string} on DGMS Product Master Category")
     public void i_click_field_and_fill_with_on_dgms_product_master_ppob_group(String arg0, String arg1) {
         setUpPPOBGroup();
-        if (arg0.equalsIgnoreCase("Status")) {
+        if (arg0.equalsIgnoreCase("Status") && !arg1.isEmpty()) {
             globalPages.dropList(arg0, arg1);
-        } else {
+        } else if (!arg1.isEmpty()) {
             String[] value = arg1.split(",");
             sobHelper.delay(500);
             if (value[0].equalsIgnoreCase("random")) {
-                globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
+                arg1 = globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
             } else if (value[0].equalsIgnoreCase("number")) {
-                globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
+                arg1 = globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
             } else if (value[0].equalsIgnoreCase("space")) {
                 String spaces = " ".repeat(Integer.parseInt(value[1]));
-                globalPages.inputText(arg0, spaces);
+                arg1 = globalPages.inputText(arg0, spaces);
             } else {
-                globalPages.inputText(arg0, value[0]);
+                arg1 = globalPages.inputText(arg0, value[0]);
             }
+        } else {
+            scenario.log("Skip This Step");
         }
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Filter Section");
+        scenario.attach(screenshotData, "image/png", "Filter Section\nValue : " + arg1);
         sobHelper.delay(500);
     }
 

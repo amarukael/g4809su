@@ -1,15 +1,24 @@
 package utility;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.SecureRandom;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.output.ByteArrayOutputStream;
 //import com.itextpdf.text.Document;
 //import com.itextpdf.text.Image;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
-
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.security.SecureRandom;
 
 public class Helper {
     private static final String num = "0123456789";
@@ -27,19 +36,19 @@ public class Helper {
         return srcFile;
     }
 
-//    public static void addImageToPDF(Document document, byte[] srcFile) {
-//        try {
-//            // Create an Image instance from the byte array
-//            Image img = Image.getInstance(srcFile);
-//            img.scaleToFit(650, 650); // Adjust image size as needed
-//            img.setAbsolutePosition(110, 200);
-//
-//            document.add(img);
-//            document.newPage(); // Add a new page for the rest of the content
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    // public static void addImageToPDF(Document document, byte[] srcFile) {
+    // try {
+    // // Create an Image instance from the byte array
+    // Image img = Image.getInstance(srcFile);
+    // img.scaleToFit(650, 650); // Adjust image size as needed
+    // img.setAbsolutePosition(110, 200);
+    //
+    // document.add(img);
+    // document.newPage(); // Add a new page for the rest of the content
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
 
     public static String getCurrentDirectory() {
         return System.getProperty("user.dir");
@@ -51,8 +60,7 @@ public class Helper {
         return filePath.toString();
     }
 
-    public static String check_file_exist(String filename)
-    {
+    public static String check_file_exist(String filename) {
         String home = System.getProperty("user.home");
         String file_name = filename;
         String file_with_location = home + "\\Downloads\\" + file_name;
@@ -68,6 +76,37 @@ public class Helper {
             String result1 = result;
             return result1;
         }
+    }
+
+    public static String randomAlphanumeric(int length) {
+        if (length <= 0) {
+            throw new IllegalArgumentException("Length must be positive.");
+        }
+
+        StringBuilder sb = new StringBuilder(length);
+        SecureRandom random = new SecureRandom();
+
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String digits = "0123456789";
+
+        sb.append(upper.charAt(random.nextInt(upper.length())));
+        sb.append(lower.charAt(random.nextInt(lower.length())));
+        sb.append(digits.charAt(random.nextInt(digits.length())));
+
+        for (int i = 4; i < length; i++) {
+            String randomSource = getRandomSource(upper, lower, digits, random.toString());
+            sb.append(randomSource.charAt(random.nextInt(randomSource.length())));
+        }
+
+        for (int i = sb.length() - 1; i > 0; i--) {
+            int swapIndex = random.nextInt(i + 1);
+            char temp = sb.charAt(swapIndex);
+            sb.setCharAt(swapIndex, sb.charAt(i));
+            sb.setCharAt(i, temp);
+        }
+
+        return sb.toString();
     }
 
     public static String randomString2(int len) {
@@ -116,10 +155,10 @@ public class Helper {
         return sources[random.nextInt(sources.length)];
     }
 
-    public static void sleep(int milliSecond){
+    public static void sleep(int milliSecond) {
         try {
             Thread.sleep(milliSecond);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -140,5 +179,58 @@ public class Helper {
         }
 
         return sb.toString();
+    }
+
+    public static byte[] generateImageAsBytes(String text) {
+
+        BufferedImage tempImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D tempG2d = tempImage.createGraphics();
+
+        Font font = new Font("Arial", Font.PLAIN, 24);
+        tempG2d.setFont(font);
+        FontMetrics fontMetrics = tempG2d.getFontMetrics();
+
+        String[] lines = text.split("\n");
+
+        int maxLineWidth = 0;
+        int totalHeight = 0;
+
+        for (String line : lines) {
+            int lineWidth = fontMetrics.stringWidth(line);
+            maxLineWidth = Math.max(maxLineWidth, lineWidth);
+            totalHeight += fontMetrics.getHeight();
+        }
+
+        int padding = 20;
+        int width = maxLineWidth + 2 * padding;
+        int height = totalHeight + 2 * padding;
+
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = image.createGraphics();
+
+        g2d.setPaint(Color.WHITE);
+        g2d.fillRect(0, 0, width, height);
+
+        g2d.setFont(font);
+        g2d.setPaint(Color.BLACK);
+
+        int x = padding;
+        int y = padding + fontMetrics.getAscent();
+
+        for (String line : lines) {
+            g2d.drawString(line, x, y);
+            y += fontMetrics.getHeight();
+        }
+
+        g2d.dispose();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "PNG", baos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return baos.toByteArray();
     }
 }

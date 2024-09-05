@@ -1,24 +1,27 @@
 package com.ids.automation.stepdefinitions.sob.mnm;
 
+import static org.testng.Assert.*;
+
+import org.openqa.selenium.WebDriver;
+
 import com.ids.automation.configuration.BrowserSetup;
 import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
+
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
+import pages.sob.SOBGlobalPages;
 import pages.sob.SOBHomePages;
 import pages.sob.mnm.SOBMnMTransactionPages;
 import utility.Helper;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class MnMTransactionSteps {
     static WebDriver driver;
     SOBLoginSteps loginSteps = new SOBLoginSteps();
     SOBHomePages homePage;
+    SOBGlobalPages globalPages;
     SOBHelper sobHelper = new SOBHelper();
     SOBMnMTransactionPages mnmTransactionPage;
     Scenario scenario = SOBLoginSteps.scenario;
@@ -77,7 +80,7 @@ public class MnMTransactionSteps {
 
     @When("I fill From Date on Filter Field on M&M Transaction")
     public void i_fill_from_date_on_filter_field_on_mm_transaction() {
-        String[] valueDate = {"25", "03"};
+        String[] valueDate = { "25", "03" };
         mnmTransactionPage.fillFromDate(valueDate);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "M&M - Transaction " + countImage);
@@ -137,5 +140,47 @@ public class MnMTransactionSteps {
         driver = BrowserSetup.getDriver();
         homePage = new SOBHomePages(driver);
         mnmTransactionPage = new SOBMnMTransactionPages(driver);
+        globalPages = new SOBGlobalPages(driver);
     }
+
+    @Then("I click field {string} and fill with {string} on M&M Transaction")
+    public void i_click_field_and_fill_with_on_mm_transaction(String arg0, String arg1) {
+        setUpMandMTransaction();
+        homePage.scrollBody(-250);
+        String[] value = arg1.split(",");
+        sobHelper.delay(500);
+        if (arg0.equalsIgnoreCase("Status") || arg0.equalsIgnoreCase("Messaging Product")) {
+            globalPages.dropList(arg0, arg1);
+        } else {
+            if (value[0].equalsIgnoreCase("random")) {
+                globalPages.inputText(arg0, Helper.generateRandomString(Integer.parseInt(value[1])));
+            } else if (value[0].equalsIgnoreCase("number")) {
+                globalPages.inputText(arg0, Helper.randomString2(Integer.parseInt(value[1])));
+            } else if (value[0].equals("randomcase")) {
+                globalPages.inputText(arg0, sobHelper.toRandomCase(value[1]));
+            } else {
+                globalPages.inputText(arg0, value[0]);
+            }
+        }
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Field : " + arg0 + "\nValue : " + arg1);
+        sobHelper.delay(500);
+    }
+
+    @Given("I click detail on row {string} on M&M Transaction")
+    public void I_click_detail_on_row_on_M_amp_M_Transaction(String s) {
+        setUpMandMTransaction();
+        sobHelper.delay(1000);
+        mnmTransactionPage.getValueCell(s, 12);
+        sobHelper.delay(500);
+        mnmTransactionPage.detailButton(s);
+        sobHelper.delay(500);
+        String result = mnmTransactionPage.validateValue(s, 12);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "M&M - Transaction " + countImage);
+        countImage++;
+        scenario.log(result);
+        sobHelper.delay(500);
+    }
+
 }

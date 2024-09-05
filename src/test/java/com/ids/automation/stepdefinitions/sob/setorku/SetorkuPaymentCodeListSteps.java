@@ -1,5 +1,7 @@
 package com.ids.automation.stepdefinitions.sob.setorku;
 
+import static org.junit.Assert.*;
+
 import org.openqa.selenium.WebDriver;
 
 import com.ids.automation.configuration.BrowserSetup;
@@ -63,9 +65,14 @@ public class SetorkuPaymentCodeListSteps {
     @Given("I click detail Payment Code List on row {string}")
     public void I_click_detail_Payment_Code_List_on_row(String s) {
         setUpPaymentCodeList();
+        System.out.println("ROW " + s);
+        String paymentCode = paymentCodeListPages.getValueCell(s);
+        scenario.log("Payment Code = " + paymentCode);
+        sobHelper.delay(500);
         paymentCodeListPages.detailPaymentCode(s);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Detail payment Code");
+        assertTrue("Payment code not same", paymentCodeListPages.validatePayment(paymentCode));
         sobHelper.delay(1000);
     }
 

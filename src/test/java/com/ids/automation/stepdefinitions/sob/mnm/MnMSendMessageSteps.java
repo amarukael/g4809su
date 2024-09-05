@@ -1,21 +1,22 @@
 package com.ids.automation.stepdefinitions.sob.mnm;
 
+import static org.testng.Assert.*;
+
+import org.apache.commons.lang.StringUtils;
+import org.openqa.selenium.WebDriver;
+
 import com.ids.automation.configuration.BrowserSetup;
 import com.ids.automation.stepdefinitions.sob.SOBLoginSteps;
+
 import helper.SOBHelper;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.apache.commons.lang.StringUtils;
-import org.openqa.selenium.WebDriver;
 import pages.sob.SOBHomePages;
 import pages.sob.mnm.SOBMnMSendMessagePages;
 import utility.Helper;
-
-import static org.testng.Assert.*;
-
 
 public class MnMSendMessageSteps {
     static WebDriver driver;
@@ -25,7 +26,7 @@ public class MnMSendMessageSteps {
     SOBMnMSendMessagePages mAndMSendMessagePage;
     Scenario scenario = SOBLoginSteps.scenario;
     private byte[] screenshotData;
-    private  String tmpTemplateNm;
+    private String tmpTemplateNm;
     private String tmpType;
     private String tmpFillMode;
     private String tmpTCase;
@@ -100,8 +101,8 @@ public class MnMSendMessageSteps {
     }
 
     @Given("I choose {string} on Messaging Product, {string} on Catagory, {string} on Choose Template Name")
-    public void i_choose_on_messaging_product_on_catagory_on_choose_template_name(String messageProduct
-            , String catagory, String templateName) {
+    public void i_choose_on_messaging_product_on_catagory_on_choose_template_name(String messageProduct,
+            String catagory, String templateName) {
         sobHelper.delay(3000);
         mAndMSendMessagePage.chooseMessagingProduct(messageProduct);
         sobHelper.delay(3000);
@@ -122,14 +123,11 @@ public class MnMSendMessageSteps {
             flgTitle = 1;
             String pathFile = "";
             if (type.equals("image")) {
-                pathFile = "C:/Users/BOIDS 48/Desktop/QA-Jira/IN-54/M&M QA" +
-                        "/valid_image.jpg";
+                pathFile = "C:/Users/fahmi.amaruddin/Documents/0 Setup Testing/UI Improvment M&M/fff.png";
             } else if (type.equals("document")) {
-                pathFile = "C:/Users/BOIDS 48/Desktop/QA-Jira/IN-54/M&M QA" +
-                        "/valid_doc.pdf";
+                pathFile = "C:/Users/fahmi.amaruddin/Documents/0 Setup Testing/UI Improvment M&M/dummies.pdf";
             } else if (type.equals("video")) {
-                pathFile = "C:/Users/BOIDS 48/Desktop/QA-Jira/IN-54/M&M QA" +
-                        "/valid_video.mp4";
+                pathFile = "C:/Users/fahmi.amaruddin/Documents/0 Setup Testing/UI Improvment M&M/4440931-hd_1920_1080_25fps.mp4";
             }
 
             mAndMSendMessagePage.addFile(pathFile);
@@ -153,10 +151,12 @@ public class MnMSendMessageSteps {
         }
 
         // fill param body
-        if (flgTitle == 1) homePage.scrollBody(465);
-        else homePage.scrollBody(360);
+        if (flgTitle == 1)
+            homePage.scrollBody(465);
+        else
+            homePage.scrollBody(360);
 
-        String tmpValBody =  mAndMSendMessagePage.getValBody();
+        String tmpValBody = mAndMSendMessagePage.getValBody();
         System.out.println(tmpValBody);
         int pBody = StringUtils.countMatches(tmpValBody, "{{");
         String[] fValueBody = sobHelper.getConstructFields("body", type, fMessageBody);
@@ -233,11 +233,13 @@ public class MnMSendMessageSteps {
         }
 
         // fill param body
-        if (flgTitle == 1) homePage.scrollBody(465);
-        else homePage.scrollBody(360);
+        if (flgTitle == 1)
+            homePage.scrollBody(465);
+        else
+            homePage.scrollBody(360);
 
         if (!tCase.equals("empty_field")) {
-            String tmpValBody =  mAndMSendMessagePage.getValBody();
+            String tmpValBody = mAndMSendMessagePage.getValBody();
             System.out.println(tmpValBody);
             int pBody = StringUtils.countMatches(tmpValBody, "{{");
             String[] fValueBody = sobHelper.getConstructInvalidFields("body", type);
@@ -282,7 +284,7 @@ public class MnMSendMessageSteps {
 
     @When("I choose {string} on Template Name")
     public void i_choose_on_template_name(String templateName) {
-        tmpTemplateNm =  templateName;
+        tmpTemplateNm = templateName;
         mAndMSendMessagePage.templateNm(templateName);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "M&M - Choose Template " + countImage);
@@ -302,22 +304,21 @@ public class MnMSendMessageSteps {
         String valTo = "";
         if (fillMode.equals("manual")) {
             homePage.scrollBody(250);
-//            valTo = "628811096677," +
-//                    "6285773600198," +
-//                    "6281228582184," +
-//                    "6282372588755," +
-//                    "6285788569440," +
-//                    "6289508595059," +
-//                    "628116391008," +
-//                    "6281228057969";
-//            valTo = "6281285312957," +
-//                    "6285788569440," +
-//                    "6281228057969";
-            valTo = "6281285312957";
+            // valTo = "628811096677," +
+            // "6285773600198," +
+            // "6281228582184," +
+            // "6282372588755," +
+            // "6285788569440," +
+            // "6289508595059," +
+            // "628116391008," +
+            // "6281228057969";
+            // valTo = "6281285312957," +
+            // "6285788569440," +
+            // "6281228057969";
+            valTo = "6287711607537";
         } else {
             homePage.scrollBody(420);
-            valTo = "C:/Users/BOIDS 48/Desktop/QA-Jira/IN-54/M&M QA" +
-                    "/recipient.txt";
+            valTo = "C:/Users/fahmi.amaruddin/Documents/0 Setup Testing/IN-949 Enhance Original Partner Reff SOB/Recipient.txt";
         }
 
         mAndMSendMessagePage.chooseFillMode(fillMode, valTo);
@@ -377,7 +378,7 @@ public class MnMSendMessageSteps {
         if (condition.equals("Failed") || condition.equals("Failed Url")
                 || condition.equals("Failed Version")) {
             System.out.println("Delay Send Message Start..");
-            sobHelper.delay(15000);
+            sobHelper.delay(10000);
             System.out.println("Delay Send Message End..");
         }
         mAndMSendMessagePage.hitBtnSubmit();
@@ -385,13 +386,12 @@ public class MnMSendMessageSteps {
         scenario.attach(screenshotData, "image/png", "M&M - Submit");
         if (condition.equals("Failed"))
             sobHelper.delay(1000);
+        else if (tmpType.equals("image") || tmpType.equals("video"))
+            sobHelper.delay(2000);
+        else if (tmpType.equals("document"))
+            sobHelper.delay(3000);
         else
-            if (tmpType.equals("image") || tmpType.equals("video"))
-                sobHelper.delay(5000);
-            else if (tmpType.equals("document"))
-                sobHelper.delay(10000);
-            else
-                sobHelper.delay(5000);
+            sobHelper.delay(2000);
     }
 
     @Then("I get list Template")
@@ -405,6 +405,7 @@ public class MnMSendMessageSteps {
     @Then("{string} open format Template Messaging")
     public void open_format_template_messaging(String condition) {
         if (condition.equals("Successfully")) {
+            sobHelper.delay(3000);
             assertEquals(mAndMSendMessagePage.getTitle(), "Title");
             homePage.scrollBody(280);
             screenshotData = Helper.takeScreenshot(driver);
@@ -520,9 +521,10 @@ public class MnMSendMessageSteps {
             sobHelper.delay(1000);
         }
 
-
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", ssName);
+
+        sobHelper.delay(10000);
     }
 
     public void setUpMandMSendMessage() {

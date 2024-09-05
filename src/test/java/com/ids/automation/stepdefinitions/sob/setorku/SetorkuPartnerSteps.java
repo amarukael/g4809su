@@ -87,4 +87,5 @@ public class SetorkuPartnerSteps {
             sobHelper.delay(200);
         }
     }
+
 }

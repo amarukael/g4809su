@@ -13,7 +13,7 @@ Feature: Digital Goods Category
       | Successfully | adminqa2 |
 
   @dgms_category_filter
-  Scenario Outline: [SOB Digital Goods] Using Filter
+  Scenario Outline: [SOB Digital Goods][Product Master][Category] Using Filter -- "<condition>"
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Category on DGMS Product Master
     When I click filter button on "Digital Goods Category"
@@ -22,23 +22,23 @@ Feature: Digital Goods Category
     Then Datatable show data "Digital Goods Category"
 
     Examples:
-      | label           | value                  |
-      | Category ID     |                     31 |
-      | Category Name   | Voucher Digital Metrox |
-      | Sub Category ID |                    294 |
-      | Status          | Inactive               |
-      | Status          | Active                 |
-      | Category ID     | random,10              |
-      | Category ID     | number,10              |
-      | Category ID     | number,11              |
-      | Category Name   | random,50              |
-      | Category Name   | random,51              |
-      | Sub Category ID | random,10              |
-      | Sub Category ID | number,10              |
-      | Sub Category ID | number,11              |
+      | label           | value                  | condition |
+      | Category ID     |                     31 | Success   |
+      | Category Name   | Voucher Digital Metrox | Success   |
+      | Sub Category ID |                    294 | Success   |
+      | Status          | Inactive               | Success   |
+      | Status          | Active                 | Success   |
+      | Category ID     | random,10              | Failed    |
+      | Category ID     | number,10              | Failed    |
+      | Category ID     | number,11              | Failed    |
+      | Category Name   | random,50              | Failed    |
+      | Category Name   | random,51              | Failed    |
+      | Sub Category ID | random,10              | Failed    |
+      | Sub Category ID | number,10              | Failed    |
+      | Sub Category ID | number,11              | Failed    |
 
   @dgms_category_filter_all_field
-  Scenario Outline: [SOB Digital Goods] Using Filter All Field
+  Scenario Outline: [SOB Digital Goods] Using Filter All -- "<condition>"
     Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
     Then I click Tab Category on DGMS Product Master
     When I click filter button on "Digital Goods Category"
@@ -50,20 +50,21 @@ Feature: Digital Goods Category
     Then Datatable show data "Digital Goods Category"
 
     Examples:
-      | categoryId | categoryName                      | subCategoryID | status   |
-      |         79 | Voucher Digital Socall Ribs & BBQ |             6 | Active   |
-      |            | Voucher Digital Socall Ribs & BBQ |             6 | Active   |
-      |         79 |                                   |             6 | Active   |
-      |         79 | Voucher Digital Socall Ribs & BBQ |               | Active   |
-      | random,10  | Voucher Digital Socall Ribs & BBQ |             6 | Active   |
-      | number,10  | Voucher Digital Socall Ribs & BBQ |             6 | Active   |
-      | number,11  | Voucher Digital Socall Ribs & BBQ |             6 | Active   |
-      |         79 | random,50                         |             6 | Active   |
-      |         79 | random,51                         |             6 | Active   |
-      |         79 | Voucher Digital Socall Ribs & BBQ | random,10     | Active   |
-      |         79 | Voucher Digital Socall Ribs & BBQ | number,10     | Active   |
-      |         79 | Voucher Digital Socall Ribs & BBQ | number,11     | Active   |
-      |         79 | Voucher Digital Socall Ribs & BBQ |             6 | Inactive |
+      | categoryId | categoryName                      | subCategoryID | status   | condition |
+      |         79 | Voucher Digital Socall Ribs & BBQ |             6 | Active   | Success   |
+      |            | Voucher Digital Socall Ribs & BBQ |             6 | Active   | Success   |
+      |         79 |                                   |             6 | Active   | Success   |
+      |         79 | Voucher Digital Socall Ribs & BBQ |               | Active   | Success   |
+      |         79 | Voucher Digital Socall Ribs & BBQ |             6 |          | Success   |
+      | random,10  | Voucher Digital Socall Ribs & BBQ |             6 | Active   | Failed    |
+      | number,10  | Voucher Digital Socall Ribs & BBQ |             6 | Active   | Failed    |
+      | number,11  | Voucher Digital Socall Ribs & BBQ |             6 | Active   | Failed    |
+      |         79 | random,50                         |             6 | Active   | Failed    |
+      |         79 | random,51                         |             6 | Active   | Failed    |
+      |         79 | Voucher Digital Socall Ribs & BBQ | random,10     | Active   | Failed    |
+      |         79 | Voucher Digital Socall Ribs & BBQ | number,10     | Active   | Failed    |
+      |         79 | Voucher Digital Socall Ribs & BBQ | number,11     | Active   | Failed    |
+      |         79 | Voucher Digital Socall Ribs & BBQ |             6 | Inactive | Failed    |
 
   @dgms_category_add_new
   Scenario Outline: [SOB Digital Goods] Using Add New Category
@@ -100,3 +101,19 @@ Feature: Digital Goods Category
       | random,50    |           189 | random,255 | random,255     | Inactive |
       | space,5      | space,5       | space,5    | space,5        | Inactive |
       |              |               |            |                | null     |
+
+  @dgms_switch_status_category
+  Scenario Outline: [SOB][DGMS][FE] Category - Switch Category Status
+    Given I am in Menu "Digital Goods" and Sub-Menu "Product Master"
+    Then I click Tab Category on DGMS Product Master
+    When I click filter button on "Digital Goods Category"
+    Then I click field "Category Name" and fill with "test" on DGMS Product Master Category
+    When I click apply button filter
+    Then I Hit Switch Button Product Row "<row>" to "<switch>"
+    Given I Hit "<btn>" Button in Status Confirmation
+    Then I wait snackbar show and button switched
+
+    Examples:
+      | row | switch   | btn |
+      |   1 | active   | yes |
+      |   2 | inactive | yes |

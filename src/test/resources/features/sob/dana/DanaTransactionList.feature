@@ -6,6 +6,7 @@ Feature: Dana Transaction List
     Given I open SOB Website
     When I logged in with username "<username>"
     Then I "<condition>" navigate to "DANA, Transaction History"
+
     Examples:
       | condition    | username |
       | Successfully | adminqa2 |
@@ -27,21 +28,22 @@ Feature: Dana Transaction List
     * I Click Field "<label>" and Fill With "<value>" on DANA Transaction
     When I click apply button filter
     Then Datatable show data "DANA Transaction"
+
     Examples:
-      | label          | value                               | condition |
-      | Tracking Reff  | 20240716022306903561192             | Success   |
-      | Acquisition ID | 20240716111212800100166730217811630 | Success   |
-      | Customer ID    | 552023060116                        | Success   |
-      | Product Name   | TELKOMSEL (HALO)                    | Success   |
-      | Ref/Token      | D00587                              | Success   |
-      | Amount         | 1108700                             | Success   |
-      | Status         | Success                             | Success   |
-      | Tracking Reff  | random                              | failed    |
-      | Acquisition ID | random                              | failed    |
-      | Customer ID    | random                              | failed    |
-      | Product Name   | random                              | failed    |
-      | Ref/Token      | random                              | failed    |
-      | Amount         | 000000                              | failed    |
+      | label  | value   | condition |
+      | Status | Success | Success   |
+      # | Tracking Reff  | 20240716022306903561192             | Success   |
+      # | Acquisition ID | 20240716111212800100166730217811630 | Success   |
+      # | Customer ID    | 552023060116                        | Success   |
+      # | Product Name   | TELKOMSEL (HALO)                    | Success   |
+      # | Ref/Token      | D00587                              | Success   |
+      # | Amount         | 1108700                             | Success   |
+      # | Tracking Reff  | random                              | failed    |
+      # | Acquisition ID | random                              | failed    |
+      # | Customer ID    | random                              | failed    |
+      # | Product Name   | random                              | failed    |
+      # | Ref/Token      | random                              | failed    |
+      # | Amount         | 000000                              | failed    |
 
   @DANA_Transaction_filter_by_all_data
   Scenario: [SOB DANA] Get data using Filter by all field

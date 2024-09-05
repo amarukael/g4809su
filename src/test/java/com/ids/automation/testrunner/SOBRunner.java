@@ -17,10 +17,10 @@ import io.cucumber.junit.CucumberOptions;
 import utility.ExtentReport;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src\\test\\resources\\features\\sob\\setorku\\SetorkuProduct.feature", glue = {
-        "com.ids.automation.stepdefinitions.sob" }, tags = "@setorku_product_add_product", plugin = {
+@CucumberOptions(features = "src\\test\\resources\\features\\sob\\digitalgoods\\DigitalGoodsProduct.feature", glue = {
+        "com.ids.automation.stepdefinitions.sob" }, tags = "@dgms_product_filter", plugin = {
                 "pretty",
-                // "html:target/report/cucumber.html",
+                "html:target/report/cucumber.html",
                 "json:target/report/cucumber.json",
                 "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:" },
         // dryRun = true,
@@ -45,15 +45,16 @@ public class SOBRunner {
 
     @AfterSuite
     public void tearDownSuite() {
-        // reporter.endReport();
         extentReports.flush();
     }
 
     @AfterClass
     public static void rename() {
         String nameFile = Hooks.getData();
-        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 23_Aug_24\\PDF Report\\ExtentPDF.pdf";
-        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 23_Aug_24\\PDF Report\\"
+        String[] part = nameFile.split("--");
+        nameFile = part[0];
+        String oldFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 5_Sep_24\\PDF Report\\ExtentPDF.pdf";
+        String newFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\Automation-UI\\test-output\\Report-Automation_ 5_Sep_24\\PDF Report\\"
                 + nameFile + ".pdf";
         File oldFile = new File(oldFilePath);
         File newFile = new File(newFilePath);

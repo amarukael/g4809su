@@ -217,6 +217,7 @@ public class SOBGlobalSteps {
 
     @Then("I fill From Date \\({string}) and To Date \\({string}) on {string}")
     public void i_fill_from_date_and_to_date_on(String arg0, String arg1, String arg2) {
+        setUp();
         i_fill_from_date_on(arg0);
         i_fill_to_date_on(arg1);
         System.out.println("Successfully fill date on " + arg2);
@@ -283,7 +284,7 @@ public class SOBGlobalSteps {
         scenario.attach(screenshotData, "image/png", "Show Alert " + arg0);
         assertTrue("Snack bar Success", globalPages.successAlert());
         assertFalse("Snack bar Error", globalPages.errorAlert());
-        sobHelper.delay(200);
+        sobHelper.delay(5000);
     }
 
     @When("I click button submit form")
@@ -317,6 +318,8 @@ public class SOBGlobalSteps {
 
     @Then("I Hit {string} Button in Status Confirmation")
     public void i_hit_button_in_status_confirmation(String arg0) throws Exception {
+        setUp();
+        sobHelper.saveData("btn", arg0);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Confirmation");
         sobHelper.delay(500);
@@ -327,25 +330,31 @@ public class SOBGlobalSteps {
 
     @Then("I wait snackbar show and button switched")
     public void waitButtonSwitched() throws Exception {
-        sobHelper.delay(2000);
-        assertTrue("Snack bar Success", globalPages.successAlert());
-        assertFalse("Snack bar Error", globalPages.errorAlert());
-        String row = dataSwitch.get("Row");
-        String updateTo = dataSwitch.get("updateTo");
-        WebElement checkbox = driver.findElement(By.xpath("//div[@data-id='" + row + "']" +
-                "//input[@type='checkbox']"));
-        switch (updateTo) {
-            case "ACTIVE":
-                wait.until(ExpectedConditions.elementToBeSelected(checkbox));
-                break;
-            case "INACTIVE":
-                wait.until(ExpectedConditions.elementSelectionStateToBe(checkbox, false));
-                break;
-            default:
-                throw new Exception("Invalid argument");
+        String message = "User Click No", btnConfirm;
+        btnConfirm = sobHelper.getData("btn");
+        if (btnConfirm.equalsIgnoreCase("yes")) {
+            sobHelper.delay(2000);
+            assertTrue("Snack bar Success", globalPages.successAlert());
+            assertFalse("Snack bar Error", globalPages.errorAlert());
+            String row = dataSwitch.get("Row");
+            String updateTo = dataSwitch.get("updateTo");
+            WebElement checkbox = driver.findElement(By.xpath("//div[@data-id='" + row + "']" +
+                    "//input[@type='checkbox']"));
+            switch (updateTo) {
+                case "ACTIVE":
+                    wait.until(ExpectedConditions.elementToBeSelected(checkbox));
+                    break;
+                case "INACTIVE":
+                    wait.until(ExpectedConditions.elementSelectionStateToBe(checkbox, false));
+                    break;
+                default:
+                    throw new Exception("Invalid argument");
+            }
         }
+
+        sobHelper.delay(500);
         screenshotData = Helper.takeScreenshot(driver);
-        scenario.attach(screenshotData, "image/png", "Switched");
+        scenario.attach(screenshotData, "image/png", message);
         sobHelper.delay(500);
     }
 

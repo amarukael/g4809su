@@ -1,12 +1,20 @@
 package pages.sob.mnm;
 
-import helper.SOBHelper;
-import org.openqa.selenium.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
+import helper.SOBHelper;
 
 public class SOBMnMTransactionPages {
     WebDriver driver;
@@ -24,6 +32,15 @@ public class SOBMnMTransactionPages {
                 By.xpath("//div[@class='MuiDataGrid-virtualScroller css-frlfct']"));
         ((JavascriptExecutor) driver).executeScript(
                 "arguments[0].scrollTo({left: 900, top: 0, behavior: 'smooth'});", dataTableListTransaction);
+        sobHelper.delay(800);
+
+    }
+
+    public void scrollDatatable2(Integer left) {
+        WebElement dataTableListTransaction = driver.findElement(
+                By.xpath("//div[@class='MuiDataGrid-virtualScroller css-frlfct']"));
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollTo({left: " + left + ", top: 0, behavior: 'smooth'});", dataTableListTransaction);
         sobHelper.delay(800);
 
     }
@@ -90,4 +107,64 @@ public class SOBMnMTransactionPages {
         btnExport.click();
         sobHelper.delay(800);
     }
+
+    public void detailButton(String s) {
+        WebElement btn = driver.findElement(By.xpath("//div[@data-id='" + s + "']" +
+                "//button[p[text()='Detail']]"));
+        btn.click();
+    }
+
+    public void getValueCell(String s, Integer cell) {
+        scrollDatatable2(0);
+        WebElement row = driver.findElement(By.xpath("//div[@data-id='" + s + "']"));
+        for (int i = 0; i < cell; i++) {
+            if (i == 7) {
+                scrollDatatable2(1000);
+                sobHelper.delay(500);
+            }
+            WebElement cells = row.findElement(By.xpath("//div[@data-colindex='" + i + "']"));
+
+            String cellText = cells.getText();
+            sobHelper.saveData(Integer.toString(i), cellText);
+            // System.out.println("Data-ColIndex: " + i + ", Value: " + cellText);
+
+        }
+    }
+
+    public String validateValue(String s, int in) {
+        StringBuilder result = new StringBuilder();
+        List<WebElement> elements = driver.findElements(By.cssSelector("p.MuiTypography-root.MuiTypography-body1"));
+
+        for (int i = 0; i < in; i++) {
+            String validValue = sobHelper.getData(Integer.toString(i));
+
+            if (i == 1) {
+                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                LocalDateTime dateTime = LocalDateTime.parse(validValue, inputFormatter);
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+                validValue = dateTime.format(outputFormatter);
+            }
+            boolean found = false;
+
+            for (WebElement element : elements) {
+                String elementText = element.getText();
+                if (elementText.equals(validValue)) {
+                    String sfound = " \n Data \t: " + i + " - Valid value found \t | \t Value Data \t: "
+                            + validValue;
+                    result.append(sfound);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                String sfound = " \n Data \t: " + i + " - Not Found \t | \t Expected\t : "
+                        + validValue;
+                result.append(sfound);
+            }
+        }
+        String sResult = result.toString();
+        return sResult;
+    }
+
 }

@@ -89,7 +89,19 @@ public class SOBGlobalPages {
     }
 
     public void submitButton() {
-        driver.findElement(By.id("button-submit-form")).click();
+        try {
+            driver.findElement(By.id("button-submit-form")).click();
+        } catch (Exception e) {
+            System.out.println("\nSubmit Button with Id not Found \nTrying to click with text\n");
+            try {
+                driver.findElement(By
+                        .xpath("//button[contains(translate(text(),'ABCDEFGHIJKLMNOPURSTUWXYZ','abcdefghijklmnopurstuwxyz'), 'submit')]"))
+                        .click();
+            } catch (Exception err) {
+                err.printStackTrace();
+            }
+        }
+
     }
 
     public void fillFromDate(String[] value) {
@@ -116,8 +128,12 @@ public class SOBGlobalPages {
 
     public String inputText(String arg0, String arg1) {
         WebElement field = driver.findElement(By.xpath("(//label[text()='" + arg0 + "']/following::input)[1]"));
+        field.sendKeys(Keys.chord(Keys.CONTROL, "a", Keys.DELETE));
+        sobHelper.delay(300);
         field.click();
+        sobHelper.delay(300);
         field.clear();
+        sobHelper.delay(300);
         field.sendKeys(arg1);
         return arg1;
     }
@@ -169,7 +185,6 @@ public class SOBGlobalPages {
                     By.xpath("./following-sibling::div//div[@role='button' and @aria-haspopup='listbox']"));
             container.click();
             sobHelper.delay(500);
-
             sobHelper.delay(500);
             driver.findElement(By.xpath("//li[normalize-space(text())='" + arg1 + "']")).click();
         }

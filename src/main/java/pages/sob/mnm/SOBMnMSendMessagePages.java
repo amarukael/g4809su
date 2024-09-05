@@ -1,14 +1,20 @@
 package pages.sob.mnm;
 
-import helper.SOBHelper;
-import org.openqa.selenium.*;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
+import helper.SOBHelper;
 
 public class SOBMnMSendMessagePages {
     WebDriver driver;
@@ -66,18 +72,18 @@ public class SOBMnMSendMessagePages {
             driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             if (type.equals("text") || type.equals("3_button_static_dynamic")) {
                 if (driver.findElement(
-                                By.xpath("//div[contains(@class,'template__header MuiBox-root')]" +
-                                        "//div[@class='MuiBox-root css-0']" +
-                                        "//div[contains(@class,'MuiBox-root')]" +
-                                        "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]/following-sibling::p"))
+                        By.xpath("//div[contains(@class,'template__header MuiBox-root')]" +
+                                "//div[@class='MuiBox-root css-0']" +
+                                "//div[contains(@class,'MuiBox-root')]" +
+                                "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]/following-sibling::p"))
                         .isDisplayed()) {
                     return true;
                 }
             } else {
                 if (driver.findElement(
                         By.xpath("//div[contains(@class,'template__header MuiBox-root')]" +
-                                        "//div[contains(@class,'MuiBox-root')]" +
-                                        "//span[contains(@class,'MuiTypography-root MuiTypography-caption')]"))
+                                "//div[contains(@class,'MuiBox-root')]" +
+                                "//span[contains(@class,'MuiTypography-root MuiTypography-caption')]"))
                         .isDisplayed()) {
                     return true;
                 }
@@ -127,10 +133,10 @@ public class SOBMnMSendMessagePages {
         try {
             driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             if (driver.findElement(
-                            By.xpath("//div[contains(@class,'MuiFormGroup-root')]" +
-                                    "//div[contains(@class,'MuiBox-root')]" +
-                                    "//div[contains(@class,'MuiBox-root')]" +
-                                    "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]"))
+                    By.xpath("//div[contains(@class,'MuiFormGroup-root')]" +
+                            "//div[contains(@class,'MuiBox-root')]" +
+                            "//div[contains(@class,'MuiBox-root')]" +
+                            "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]"))
                     .isDisplayed()) {
                 return true;
             }
@@ -145,12 +151,12 @@ public class SOBMnMSendMessagePages {
         try {
             driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             if (driver.findElement(
-                            By.xpath("//div[contains(@class,'template__buttons MuiBox-root')]" +
-                                    "//div[contains(@class,'template__button MuiBox-root')][1]" +
-                                    "//div[@class='MuiBox-root css-0']" +
-                                    "//div[contains(@class,'MuiBox-root')]" +
-                                    "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]" +
-                                    "/following-sibling::p"))
+                    By.xpath("//div[contains(@class,'template__buttons MuiBox-root')]" +
+                            "//div[contains(@class,'template__button MuiBox-root')][1]" +
+                            "//div[@class='MuiBox-root css-0']" +
+                            "//div[contains(@class,'MuiBox-root')]" +
+                            "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]" +
+                            "/following-sibling::p"))
                     .isDisplayed()) {
                 return true;
             }
@@ -165,12 +171,12 @@ public class SOBMnMSendMessagePages {
         try {
             driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
             if (driver.findElement(
-                            By.xpath("//div[contains(@class,'template__buttons MuiBox-root')]" +
-                                    "//div[contains(@class,'template__button MuiBox-root')][3]" +
-                                    "//div[@class='MuiBox-root css-0']" +
-                                    "//div[contains(@class,'MuiBox-root')]" +
-                                    "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]" +
-                                    "/following-sibling::p"))
+                    By.xpath("//div[contains(@class,'template__buttons MuiBox-root')]" +
+                            "//div[contains(@class,'template__button MuiBox-root')][3]" +
+                            "//div[@class='MuiBox-root css-0']" +
+                            "//div[contains(@class,'MuiBox-root')]" +
+                            "//p[contains(@class,'MuiTypography-root MuiTypography-body1')]" +
+                            "/following-sibling::p"))
                     .isDisplayed()) {
                 return true;
             }
@@ -202,12 +208,16 @@ public class SOBMnMSendMessagePages {
             WebElement successAlert = null;
             if (flag.equals("Failed Url")) {
                 successAlert = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-filledError MuiAlert-filled')]" +
-                                "//div[text()='Internal Server Error']")));
+                        By.xpath(
+                                "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-filledError MuiAlert-filled')]"
+                                        +
+                                        "//div[text()='Internal Server Error']")));
             } else {
                 successAlert = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        By.xpath("//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-filledError MuiAlert-filled')]" +
-                                "//div[text()='Invalid Messaging AccessToken']")));
+                        By.xpath(
+                                "//div[contains(@class,'MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation0 MuiAlert-root MuiAlert-filledError MuiAlert-filled')]"
+                                        +
+                                        "//div[text()='Invalid Messaging AccessToken']")));
             }
 
             if (successAlert.isDisplayed()) {
@@ -259,7 +269,7 @@ public class SOBMnMSendMessagePages {
     public void addFile(String path) {
         WebElement fileInput = driver.findElement(By.cssSelector("input[type=file]"));
         fileInput.sendKeys(path);
-        sobHelper.delay(1000);
+        sobHelper.delay(5000);
     }
 
     public void fillTitle(int param, String value) {
@@ -301,16 +311,18 @@ public class SOBMnMSendMessagePages {
         if (type.equals("manual")) {
             WebElement rbTo = driver.findElement(By.xpath("//input[@value='manual']"));
             ((JavascriptExecutor) driver).executeScript("arguments[0].checked = true;", rbTo);
-//            WebElement fTo = driver.findElement(
-//                    By.xpath("//input[contains(@class,'MuiInputBase-input MuiOutlinedInput-input')]"));
+            // WebElement fTo = driver.findElement(
+            // By.xpath("//input[contains(@class,'MuiInputBase-input
+            // MuiOutlinedInput-input')]"));
             WebElement fTo = driver.findElement(By.name("recipients"));
-//            fTo.click();
+            // fTo.click();
             fTo.sendKeys(value);
         } else {
             WebElement rbTo = driver.findElement(By.xpath("//input[@value='bulk']"));
             rbTo.click();
             WebElement fileInput = driver.findElement(
-                    By.xpath("//div[@class='MuiFormControl-root MuiFormControl-fullWidth css-m7nzkw']//div[@class='MuiFormGroup-root css-1h7anqn']//input[@type='file']"));
+                    By.xpath(
+                            "//div[@class='MuiFormControl-root MuiFormControl-fullWidth css-m7nzkw']//div[@class='MuiFormGroup-root css-1h7anqn']//input[@type='file']"));
             fileInput.sendKeys(value);
         }
     }
@@ -326,4 +338,5 @@ public class SOBMnMSendMessagePages {
         btnSubmit.click();
         sobHelper.delay(800);
     }
+
 }
