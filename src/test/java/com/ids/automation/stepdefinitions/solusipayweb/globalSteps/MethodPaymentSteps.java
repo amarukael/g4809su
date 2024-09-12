@@ -31,7 +31,7 @@ public class MethodPaymentSteps {
     }
 
     public void setUpMethodPayment(){
-        driver = BrowserSetup.getDriver();
+        driver = BrowserSetup.getDriverMobile();
         if(solpayWeb == null){
             solpayWeb = new SolusipayWebPages(driver);
         }

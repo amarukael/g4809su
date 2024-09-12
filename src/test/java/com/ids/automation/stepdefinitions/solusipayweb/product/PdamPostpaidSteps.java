@@ -31,7 +31,7 @@ public class PdamPostpaidSteps {
     }
 
     public void setUpSolusipayWebPDAM(){
-        driver = BrowserSetup.getDriver();
+        driver = BrowserSetup.getDriverMobile();
         driver.get(SolusipayWebConstant.UrlSolpayWeb);
         if(solpayWeb == null){
             solpayWeb = new SolusipayWebPages(driver);
@@ -41,7 +41,7 @@ public class PdamPostpaidSteps {
         }
     }
     public void setUpSolusipayWebPDAM2(){
-        driver = BrowserSetup.getDriver();
+        driver = BrowserSetup.getDriverMobile();
         if(solpayWeb == null){
             solpayWeb = new SolusipayWebPages(driver);
         }
@@ -51,7 +51,7 @@ public class PdamPostpaidSteps {
     }
 
     @Given("I navigate to solusipayweb PDAM")
-    public void iNavigateToSolusipaywebPDAM(){
+    public void iNavigateToSolusipaywebPDAM() {
         setUpSolusipayWebPDAM2();
         solpayWebHelper.delay(2500);
         solpayWeb.hitBtnMenuPdam();

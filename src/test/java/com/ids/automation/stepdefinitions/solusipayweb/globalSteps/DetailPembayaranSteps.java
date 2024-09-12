@@ -1,13 +1,17 @@
 package com.ids.automation.stepdefinitions.solusipayweb.globalSteps;
 
+import static org.junit.Assert.*;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ids.automation.configuration.BrowserSetup;
+
 import helper.SolusipayWebHelper;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.solusipayweb.globalpages.DetailPembayaranPages;
 import utility.Helper;
 
@@ -24,16 +28,16 @@ public class DetailPembayaranSteps {
         DetailPembayaranSteps.scenario = scenario;
     }
 
-    public void setUpDetailPembayaran(){
-        driver = BrowserSetup.getDriver();
+    public void setUpDetailPembayaran() {
+        driver = BrowserSetup.getDriverMobile();
 
-        if(detailPembayaran == null){
+        if (detailPembayaran == null) {
             detailPembayaran = new DetailPembayaranPages(driver);
         }
     }
 
     @When("I click button pilih pembayaran")
-    public void iClickButtonPilihPembayaran(){
+    public void iClickButtonPilihPembayaran() {
         setUpDetailPembayaran();
         solpayWebHelper.delay(1000);
         detailPembayaran.hitBtnPilihPembayaran();
@@ -44,7 +48,7 @@ public class DetailPembayaranSteps {
     }
 
     @When("I now on detail pembayaran top up game page")
-    public void iNowOnDetailPembayaranTopUpGame(){
+    public void iNowOnDetailPembayaranTopUpGame() {
         setUpDetailPembayaran();
         detailPembayaran.vrfyDetailPembayaranTopUpGame();
         solpayWebHelper.delay(850);
@@ -54,7 +58,7 @@ public class DetailPembayaranSteps {
     }
 
     @Then("I now on detail pembayaran voucher game page")
-    public void iNowOnDetailPembayaranVoucherGamePage(){
+    public void iNowOnDetailPembayaranVoucherGamePage() {
         setUpDetailPembayaran();
         detailPembayaran.vrfyDetailPembayaranVoucherGame();
         solpayWebHelper.delay(850);
@@ -87,6 +91,27 @@ public class DetailPembayaranSteps {
             scenario.attach(screenshotData, "image/png", "Detail Pembayaran Page -  Discount Nominal");
             solpayWebHelper.delay(850);
         }
+    }
+
+    @When("I now on detail pembayaran Tagihan Listrik page {string}")
+    public void i_now_on_detail_pembayaran_tagihan_listrik_page(String condition) {
+        setUpDetailPembayaran();
+        assertTrue("Header Tagihan Listrik Not Found", detailPembayaran.vrfyDetailPembayaranTagihanListrik());
+        if (condition.equals("all diskon")) {
+            assertTrue("Diskon Admin Not Found", detailPembayaran.discountAdmin());
+            assertTrue("Diskon Not Found", detailPembayaran.discountNominal());
+        } else if (condition.equals("discount admin")) {
+            assertTrue("Diskon Admin Not Found", detailPembayaran.discountAdmin());
+        } else if (condition.equals("discount nominal")) {
+            assertTrue("Diskon Not Found", detailPembayaran.discountNominal());
+        } else {
+            assertFalse("Diskon Admin Found", detailPembayaran.discountAdmin());
+            assertFalse("Diskon Found", detailPembayaran.discountNominal());
+        }
+        solpayWebHelper.delay(850);
+        screenshotData = Helper.takeScreenshot(driver);
+        scenario.attach(screenshotData, "image/png", "Detail Pembayaran Page - No Discount");
+        solpayWebHelper.delay(850);
     }
 
     @Then("I now on detail pembayaran pulsa page {string}")

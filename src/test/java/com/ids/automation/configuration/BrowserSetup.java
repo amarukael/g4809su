@@ -1,22 +1,22 @@
 package com.ids.automation.configuration;
 
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import io.github.bonigarcia.wdm.WebDriverManager;
-//import utility.PDFCreater;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+//import utility.PDFCreater;
+
 public class BrowserSetup {
     private static WebDriver driver;
     private static WebDriver driver2;
     private static WebDriver driverMobile;
-//    public static Document document = PDFCreater.createDocument();
+    // public static Document document = PDFCreater.createDocument();
 
     public static WebDriver getDriver() {
         if (driver == null) {
@@ -80,7 +80,7 @@ public class BrowserSetup {
     private static void initializeChromeDriverMobile() {
         System.out.println("Setting up ChromeDriver for mobile view...");
         Map<String, String> mobileEmulation = new HashMap<>();
-        mobileEmulation.put("deviceName", "Nexus 5");
+        mobileEmulation.put("deviceName", "iPhone 12 Pro");
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--start-maximized");
         chromeOptions.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));

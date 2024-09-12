@@ -1,16 +1,18 @@
 package com.ids.automation.stepdefinitions.solusipayweb.globalSteps;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.ids.automation.configuration.BrowserSetup;
+
 import helper.SolusipayWebHelper;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.solusipayweb.globalpages.SolusipayWebPages;
 import pages.solusipayweb.globalpages.PaymentCheckoutPages;
+import pages.solusipayweb.globalpages.SolusipayWebPages;
 import utility.Helper;
+import utility.PaymentGatewayNotifier;
 
 public class PaymentCheckoutSteps {
     public static Scenario scenario;
@@ -26,19 +28,19 @@ public class PaymentCheckoutSteps {
         PaymentCheckoutSteps.scenario = scenario;
     }
 
-    public void setUpPaymentCheckout(){
-        driver = BrowserSetup.getDriver();
-        if(solpayWeb == null){
+    public void setUpPaymentCheckout() {
+        driver = BrowserSetup.getDriverMobile();
+        if (solpayWeb == null) {
             solpayWeb = new SolusipayWebPages(driver);
         }
 
-        if(paymentCheckout == null){
+        if (paymentCheckout == null) {
             paymentCheckout = new PaymentCheckoutPages(driver);
         }
     }
 
     @When("I choose a payment method {string}")
-    public void iChooseAPayentMethod(String value){
+    public void iChooseAPayentMethod(String value) {
         setUpPaymentCheckout();
         solpayWebHelper.delay(1500);
         paymentCheckout.paymentMethod(value);
@@ -49,7 +51,7 @@ public class PaymentCheckoutSteps {
     }
 
     @When("I click button bayar on payment checkout")
-    public void iClickButtonBayar(){
+    public void iClickButtonBayar() {
         setUpPaymentCheckout();
         paymentCheckout.hitBtnBayar();
         solpayWebHelper.delay(400);
@@ -59,11 +61,12 @@ public class PaymentCheckoutSteps {
     }
 
     @When("I success choose a payment method")
-    public void successChooseAPaymentMethod(){
+    public void successChooseAPaymentMethod() {
         setUpPaymentCheckout();
         paymentCheckout.vrfyAfterChoosePaymentMethod();
         solpayWebHelper.delay(500);
-        paymentCheckout.hitBtnCopyVAToken();
+        String va = paymentCheckout.hitBtnCopyVAToken();
+        PaymentGatewayNotifier.main(va);
         solpayWebHelper.delay(500);
         screenshotData = Helper.takeScreenshot(driver);
         scenario.attach(screenshotData, "image/png", "Payment Checkout Page - Copy VA Token");

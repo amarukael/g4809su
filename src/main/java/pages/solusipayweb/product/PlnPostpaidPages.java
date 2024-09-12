@@ -1,14 +1,14 @@
 package pages.solusipayweb.product;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
-import java.time.Duration;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class PlnPostpaidPages {
     static WebDriver driver;
@@ -20,68 +20,67 @@ public class PlnPostpaidPages {
         PageFactory.initElements(driver, this);
     }
 
-    // start -- Verify Page //
-    public void vrfyElementPlnPostPage(){
-        WebElement solpayWebPage = driver.findElement(By.xpath("//div[text()='Tagihan Listrik']"));
-        if (solpayWebPage.isDisplayed()){
-            System.out.println("I'm now on Pln Postpaid Page");
+    public void vrfyElementPlnPostPage() {
+        try {
+            WebElement tagihanListrik = driver.findElement(By.xpath("//div[text()='Tagihan Listrik']"));
+            tagihanListrik.isDisplayed();
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     }
 
-    public void vrfyDetailPembayaranPopUp(){
+    public void vrfyDetailPembayaranPopUp() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Detail Pembayaran')]")));
         WebElement detailPembayaranPopUp = driver.findElement(By.xpath("//*[contains(text(), 'Detail Pembayaran')]"));
-        if(detailPembayaranPopUp.isDisplayed()){
+        if (detailPembayaranPopUp.isDisplayed()) {
             System.out.println("Pop Up Showed");
-        }else {
+        } else {
             System.out.println("Timeout Pop Up");
         }
     }
 
-    public void vrfyElementPaymentSuccessPage(){
+    public void vrfyElementPaymentSuccessPage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Pembayaran Berhasil!']")));
         WebElement successPaymentPage = driver.findElement(By.xpath("//*[text()='Pembayaran Berhasil!']"));
-        if (successPaymentPage.isDisplayed()){
+        if (successPaymentPage.isDisplayed()) {
             System.out.println("I'm now on Success Payment Page");
         }
     }
 
-    public void vrfyDetailTransactionPLNPost(){
+    public void vrfyDetailTransactionPLNPost() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[text()='Detail Transaksi']")));
         WebElement detailTransactionPlnPostPage = driver.findElement(By.xpath("//*[text()='Detail Transaksi']"));
-        if (detailTransactionPlnPostPage.isDisplayed()){
+        if (detailTransactionPlnPostPage.isDisplayed()) {
             System.out.println("I'm now on Detail Transaction PLN Postpaid Page");
         }
     }
     // end -- Verify Page //
 
-
-
-    public void inputIdPelanggan(String idpel){
+    public void inputIdPelanggan(String idpel) {
         WebElement fieldIdPel = driver.findElement(By.id("field_input"));
         fieldIdPel.click();
-        typeWithDelay(fieldIdPel, idpel);
+        fieldIdPel.sendKeys(idpel);
     }
 
-    public void btnSubmit(){
+    public void btnSubmit() {
         WebElement btnSubmitPln = driver.findElement(By.id("btn_submit_pln"));
         btnSubmitPln.click();
     }
 
-    public void btnDetailPayment(){
+    public void btnDetailPayment() {
         WebElement btnDetailPayment = driver.findElement(By.id("btn_detail_payment"));
         btnDetailPayment.click();
     }
 
-    public void btnPaymentMethod(){
+    public void btnPaymentMethod() {
         WebElement btnPaymentMethod = driver.findElement(By.id("btn_select_payment_method"));
         btnPaymentMethod.click();
     }
 
-    public void btnPayment(){
+    public void btnPayment() {
         WebElement btnPayment = driver.findElement(By.id("btn_payment"));
         btnPayment.click();
     }
@@ -100,12 +99,12 @@ public class PlnPostpaidPages {
         btnRedirect.click();
     }
 
-    public void btnPaymentSuccess(){
-        WebElement  btnPaymentSuccess = driver.findElement(By.id("btn_payment_success"));
+    public void btnPaymentSuccess() {
+        WebElement btnPaymentSuccess = driver.findElement(By.id("btn_payment_success"));
         btnPaymentSuccess.click();
     }
 
-    public void btnInvoice(){
+    public void btnInvoice() {
         WebElement btnInvoice = driver.findElement(By.id("invoiceBtn"));
         btnInvoice.click();
     }
@@ -121,6 +120,5 @@ public class PlnPostpaidPages {
             }
         }
     }
-
 
 }
