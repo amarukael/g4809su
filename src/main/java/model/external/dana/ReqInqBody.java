@@ -1,22 +1,21 @@
 package model.external.dana;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+import java.util.List;
 
 public class ReqInqBody {
-    private ArrayList<ReqInqDestinations> destinationInfos;
+    private List<DestinationInfo> destinationInfos;
     private String productId;
 
-    public ReqInqBody(ArrayList<ReqInqDestinations> destinationInfos, String productId) {
+    public ReqInqBody(List<DestinationInfo> destinationInfos, String productId) {
         this.destinationInfos = destinationInfos;
         this.productId = productId;
     }
 
-    public ArrayList<ReqInqDestinations> getDestinationInfos() {
+    public List<DestinationInfo> getDestinationInfos() {
         return destinationInfos;
     }
 
-    public void setDestinationInfos(ArrayList<ReqInqDestinations> destinationInfos) {
+    public void setDestinationInfos(List<DestinationInfo> destinationInfos) {
         this.destinationInfos = destinationInfos;
     }
 

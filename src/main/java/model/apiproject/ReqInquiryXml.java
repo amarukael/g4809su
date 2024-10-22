@@ -1,9 +1,8 @@
 package model.apiproject;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @XmlRootElement(name = "data")
 public class ReqInquiryXml implements Serializable {
@@ -24,8 +23,8 @@ public class ReqInquiryXml implements Serializable {
     @XmlElement(name = "signature")
     private String signature;
 
-    public ReqInquiryXml(String trxid, String trxdate, String partnerid, String productid, String customerid,
-            String trackingref, String terminalid, String signature) {
+    public ReqInquiryXml(String trxid, String trxdate, String partnerid, String productid, String customerid
+            , String trackingref, String terminalid, String signature) {
         this.trxid = trxid;
         this.trxdate = trxdate;
         this.partnerid = partnerid;
@@ -98,18 +97,5 @@ public class ReqInquiryXml implements Serializable {
 
     public void setsignature(String signature) {
         this.signature = signature;
-    }
-
-    public String printModelXML() {
-        return "<data>\n" +
-                "    <trxid>" + trxid + "</trxid>\n" +
-                "    <trxdate>" + trxdate + "</trxdate>\n" +
-                "    <partnerid>" + partnerid + "</partnerid>\n" +
-                "    <productid>" + productid + "</productid>\n" +
-                "    <customerid>" + customerid + "</customerid>\n" +
-                "    <trackingref>" + trackingref + "</trackingref>\n" +
-                "    <terminalid>" + terminalid + "</terminalid>\n" +
-                "    <signature>" + signature + "</signature>\n" +
-                "</data>";
     }
 }

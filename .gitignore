@@ -1,4 +1,7 @@
 /target/
 /test-output/
 /out/
-/src/test/resources/extent.properties
+.idea/
+.settings/
+.vscode/
+pom.xml

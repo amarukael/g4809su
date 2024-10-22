@@ -1,30 +1,30 @@
 package helper;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import static utility.ConvertKey.*;
+
+import java.security.PrivateKey;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import model.FormatReport;
+import utility.ConvertKey;
 import utility.db.ConnectToDbSTG;
 import utility.db.DBConfigDev;
 import utility.db.DBConfigStg;
 import utility.db.DatabaseUtility;
+import utility.signature.SHA256RSA;
 
 public class Helper {
     public static String getSecretKey(String type, String environmentName, String partnerId, String TableName) {
@@ -87,99 +87,110 @@ public class Helper {
         }
     }
 
-    public static void generateExcel() {
-        String jsonFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\AutoAPI\\target\\report\\cucumber.json";
-        String excelFilePath = "C:\\Users\\fahmi.amaruddin\\Documents\\repo\\Github\\AutoAPI\\test-output\\output.xlsx";
+    // Return list of string if there's violation
+    public static List<String> validateResponseBody(Object res) {
+        List<String> validationMessage = new ArrayList<>();
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode rootNode = objectMapper.readTree(new File(jsonFilePath));
-            Workbook workbook = new XSSFWorkbook();
-            Sheet sheet = workbook.createSheet("Cucumber Report");
+        // Create a ValidatorFactory and Validator instance using Hibernate Validator
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
 
-            // Create header
-            String[] headers = { "Scenario", "Step", "Output", "Status", "Error Message", "Log" };
-            Row headerRow = sheet.createRow(0);
-            for (int i = 0; i < headers.length; i++) {
-                headerRow.createCell(i).setCellValue(headers[i]);
+        // Manually validate the instance
+        Set<ConstraintViolation<Object>> violations = validator.validate(res);
+
+        // Check for violations and collect the messages
+        if (violations.isEmpty()) {
+            // validationMessage.add("No validation errors!");
+        } else {
+            for (ConstraintViolation<Object> violation : violations) {
+                validationMessage.add(violation.getPropertyPath() + ":" + violation.getMessage());
             }
-
-            CellStyle longTextStyle = workbook.createCellStyle();
-            longTextStyle.setWrapText(true);
-            longTextStyle.setAlignment(HorizontalAlignment.LEFT);
-            longTextStyle.setVerticalAlignment(VerticalAlignment.TOP);
-
-            CellStyle defaultStyle = workbook.createCellStyle();
-            defaultStyle.setAlignment(HorizontalAlignment.LEFT);
-            defaultStyle.setVerticalAlignment(VerticalAlignment.TOP);
-
-            int rowCount = 1;
-            for (JsonNode featureNode : rootNode) {
-                for (JsonNode scenarioNode : featureNode.path("elements")) {
-                    String scenarioName = scenarioNode.path("name").asText();
-                    for (JsonNode stepNode : scenarioNode.path("steps")) {
-                        String scenarioLog = scenarioNode.path("after").path(0).path("output").path(0).asText();
-                        Row row = sheet.createRow(rowCount++);
-
-                        // Create cells directly
-                        Cell cell0 = row.createCell(0);
-                        cell0.setCellValue(scenarioName);
-                        cell0.setCellStyle(scenarioName.length() > 50 ? longTextStyle : defaultStyle);
-
-                        Cell cell1 = row.createCell(1);
-                        String stepName = stepNode.path("name").asText();
-                        cell1.setCellValue(stepName);
-                        cell1.setCellStyle(stepName.length() > 50 ? longTextStyle : defaultStyle);
-
-                        Cell cell2 = row.createCell(2);
-                        String output = formatToXml(stepNode.path("output").toString());
-                        cell2.setCellValue(output);
-                        cell2.setCellStyle(output.length() > 50 ? longTextStyle : defaultStyle);
-
-                        Cell cell3 = row.createCell(3);
-                        String status = stepNode.path("result").path("status").asText();
-                        cell3.setCellValue(status);
-                        cell3.setCellStyle(status.length() > 50 ? longTextStyle : defaultStyle);
-
-                        Cell cell4 = row.createCell(4);
-                        String errorMessage = stepNode.path("result").path("error_message").asText();
-                        cell4.setCellValue(errorMessage);
-                        cell4.setCellStyle(errorMessage.length() > 50 ? longTextStyle : defaultStyle);
-
-                        if (stepNode.path("name").asText().contains("perform")) {
-                            scenarioLog = "";
-                        }
-                        Cell cell5 = row.createCell(5);
-                        cell5.setCellValue(scenarioLog);
-                        cell5.setCellStyle(scenarioLog.length() > 50 ? longTextStyle : defaultStyle);
-                    }
-                }
-            }
-
-            for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-                sheet.autoSizeColumn(i);
-                if (sheet.getColumnWidth(i) > 45 * 256) {
-                    sheet.setColumnWidth(i, 45 * 256);
-                }
-            }
-
-            try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
-                workbook.write(outputStream);
-            }
-
-            workbook.close();
-            System.out.println("Excel file created successfully.");
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        return validationMessage;
     }
 
-    private static String formatToXml(String input) {
-        String dataString = input.replaceAll("[\\[\\]\"]", "").trim();
-        int dataStartIndex = dataString.indexOf("<data>");
-        if (dataStartIndex == -1)
-            return input;
-        return dataString.substring(dataStartIndex).replace("\\n", "\n");
+    public String Sign256RSA(String message, String privKey) throws Exception {
+        String result = "";
+        SHA256RSA sha256RSA = new SHA256RSA();
+        String privateKeyContent = privKey;
+        privateKeyContent = privateKeyContent.replaceAll("\n", "").replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "");
+        privateKeyContent = privateKeyContent.replace("\n", "");
+
+        PrivateKey privateKey = loadPrivateKey(privateKeyContent);
+        result = sha256RSA.sign5(message, privateKey);
+
+        return result;
+    }
+
+    public String AsysmetricSign(String message, String privKey) throws Exception {
+        String result = "";
+        SHA256RSA sha256RSA = new SHA256RSA();
+        String privateKeyContent = privKey;
+        privateKeyContent = privateKeyContent.replaceAll("\n", "").replace("-----BEGIN RSA PRIVATE KEY-----", "")
+                .replace("-----END RSA PRIVATE KEY-----", "");
+        privateKeyContent = privateKeyContent.replace("\n", "");
+
+        ConvertKey ck = new ConvertKey();
+        PrivateKey key = ck.genPrivateKey(privateKeyContent);
+        result = sha256RSA.sign(message, key);
+
+        return result;
+    }
+
+    public FormatReport createDataReport(String testCase, String caseDesc, String services, String method, String url,
+            String type, String request, String response, String expectedRc, String rcResult, String desc,
+            String status, String notes) {
+        FormatReport fReport = new FormatReport();
+        fReport.setTestCase(testCase);
+        fReport.setCaseDesc(caseDesc);
+        fReport.setServices(services);
+        fReport.setMethod(method);
+        fReport.setUrl(url);
+        fReport.setType(type);
+        fReport.setRequest(request);
+        fReport.setResponse(response);
+        fReport.setExpectedRc(expectedRc);
+        fReport.setRcResult(rcResult);
+        fReport.setDesc(desc);
+        fReport.setStatus(status);
+        fReport.setNotes(notes);
+
+        return fReport;
+    }
+
+    public FormatReport createSummDataReport(String progress, String total, String status, String totPercent) {
+        FormatReport fReport = new FormatReport();
+        fReport.setSumProgress(progress);
+        fReport.setSumTotalTask(total);
+        fReport.setSumStatus(status);
+        fReport.setSumTotPercent(totPercent);
+
+        return fReport;
+    }
+
+    public FormatReport createSummDataReportTimeTaken(String progress, String total, String status, String totPercent,
+            long timeTaken) {
+        FormatReport fReport = new FormatReport();
+        fReport.setSumProgress(progress);
+        fReport.setSumTotalTask(total);
+        fReport.setSumStatus(status);
+        fReport.setSumTotPercent(totPercent);
+        fReport.setStartTime(timeTaken);
+
+        return fReport;
+    }
+
+    public static void hitDelayTime() {
+        String delayVariableConfig = "automation.hit.delay.miliseconds";
+        PropertiesHelper propertiesHelper = new PropertiesHelper("src/test/resources/extent.properties");
+        int miliseconds = propertiesHelper.getIntProperty(delayVariableConfig, 2000);
+        try {
+            System.out.println("delay for " + delayVariableConfig + " : " + miliseconds + "ms");
+            Thread.sleep(miliseconds);
+        } catch (Exception e) {
+            System.out.println("ERROR DELAY: " + Arrays.toString(e.getStackTrace()));
+        }
     }
 }

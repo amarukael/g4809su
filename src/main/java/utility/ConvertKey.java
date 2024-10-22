@@ -3,9 +3,12 @@ package utility;
 import org.bouncycastle.asn1.*;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 public class ConvertKey {
@@ -33,5 +36,14 @@ public class ConvertKey {
         }
 
         return key;
+    }
+
+    public static PrivateKey loadPrivateKey(String key64) throws GeneralSecurityException {
+        byte[] clear = DatatypeConverter.parseBase64Binary(key64);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
+        KeyFactory fact = KeyFactory.getInstance("RSA");
+        PrivateKey priv = fact.generatePrivate(keySpec);
+        Arrays.fill(clear, (byte) 0);
+        return priv;
     }
 }

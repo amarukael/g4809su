@@ -1,9 +1,10 @@
 package model.ppob.inquiry;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
+
 import org.apache.poi.ss.formula.functions.T;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResInquiry {

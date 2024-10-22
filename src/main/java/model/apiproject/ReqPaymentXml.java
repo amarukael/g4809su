@@ -1,9 +1,8 @@
 package model.apiproject;
 
-import java.io.Serializable;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 @XmlRootElement(name = "data")
 public class ReqPaymentXml implements Serializable {
@@ -26,8 +25,8 @@ public class ReqPaymentXml implements Serializable {
     @XmlElement(name = "signature")
     private String signature;
 
-    public ReqPaymentXml(String trxid, String trxdate, String partnerid, String productid, String customerid,
-            String totalamount, String trackingref, String terminalid, String signature) {
+    public ReqPaymentXml(String trxid, String trxdate, String partnerid, String productid, String customerid
+            , String totalamount, String trackingref, String terminalid, String signature) {
         this.trxid = trxid;
         this.trxdate = trxdate;
         this.partnerid = partnerid;
@@ -109,19 +108,5 @@ public class ReqPaymentXml implements Serializable {
 
     public void setsignature(String signature) {
         this.signature = signature;
-    }
-
-    public String toXml() {
-        return "<data>\n" +
-                "    <trxid>" + trxid + "</trxid>\n" +
-                "    <trxdate>" + trxdate + "</trxdate>\n" +
-                "    <partnerid>" + partnerid + "</partnerid>\n" +
-                "    <productid>" + productid + "</productid>\n" +
-                "    <customerid>" + customerid + "</customerid>\n" +
-                "    <totalamount>" + totalamount + "</totalamount>\n" +
-                "    <trackingref>" + trackingref + "</trackingref>\n" +
-                "    <terminalid>" + terminalid + "</terminalid>\n" +
-                "    <signature>" + signature + "</signature>\n" +
-                "</data>";
     }
 }

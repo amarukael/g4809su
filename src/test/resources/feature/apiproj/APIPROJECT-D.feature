@@ -1,15 +1,58 @@
 @apiprojectrgres
 Feature: APIPROJECT
 
-  @xml
-  Scenario: inqpayrev
-    Given I have Excel data file "exceldata/apiproject.xlsx" and sheet "KPMIDI"
-    Then I perform POST for inq pay rev XML
+#  @xml
+#  Scenario: inqpayrev
+#    Given I have Excel data file "exceldata/apiproject.xlsx" and sheet "KPMIDI"
+#    Then I perform POST for inq pay rev XML
 
-  @xml
-  Scenario: inqpayrev
-    Given I have Excel data file "exceldata/apiproject.xlsx" and sheet "KPALFA"
-    Then I perform POST for inq pay rev XML
+#  @xml
+#  Scenario: inqpayrev
+#    Given I have Excel data file "exceldata/apiproject.xlsx" and sheet "KPALFA"
+#    Then I perform POST for inq pay rev XML
+
+#  @xml
+#  Scenario: inqpayrev
+#    Given I have Excel data file "exceldata/apiproject-master-dataset.xlsx" and sheet "test"
+#    Then I perform POST for inq pay rev XML NEW
+#
+
+#    @Ttet
+#  Scenario: testalfa
+#    Given Valid Master ApiProjectAlfa "exceldata/apiproject-master-dataset.xlsx" and Sheet "testalfa"
+#    When I perform testing prefer from Excel data
+#    Then I get the appropriate response
+
+#  @Ttet
+#  Scenario: testalfa
+#    Given Valid Master ApiProjectAlfa CSV "exceldata/apiproject-master-dataset.csv"
+#    When I perform testing prefer from Excel data
+#    Then I get the appropriate response
+#
+#
+#  @Ttet
+#  Scenario: testalfa
+#    Given Valid Master ApiProjectAlfa CSV "exceldata/apiproject-master-dataset.csv"
+#    When I perform testing prefer from Excel data
+#    Then I get the appropriate response
+#
+#
+#    C:/Users/naufal.pujianputra/Desktop/Automation File/TestAPINONALFA.csv
+
+  Scenario: test apiproject non-alfa
+    Given I have Excel data file for testing ApiProject Non-Alfa "C:/Users/naufal.pujianputra/Desktop/Automation File/TestAPINONALFA.csv"
+    When I perform testing prefer from Excel data for ApiProject Non-Alfa
+    Then I get the appropriate response for ApiProject Non-Alfa
+    Then I create report automation ApiProject Non-Alfa
+
+#  Scenario: test apiproject alfa
+#    Given I have Excel data file for testing ApiProject Alfa "src/test/resources/exceldata/apiproject-alfa-master-dataset.csv"
+#    When I perform testing prefer from Excel data for ApiProject Alfa
+#    Then I get the appropriate response for ApiProject Alfa
+#    Then I create report automation ApiProject Alfa
+
+#  C:/Users/naufal.pujianputra/Desktop/Automation File/apiproject-nonalfa-master-dataset - Inquiry.csv
+#  src/test/resources/exceldata/apiproject-nonalfa-master-dataset2.csv
 
 ##  @xml
 ##  Scenario: inqpayrev

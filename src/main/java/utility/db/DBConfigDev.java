@@ -1,130 +1,91 @@
 package utility.db;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DBConfigDev {
-	public enum DatabaseEnvironmentDEV {
-		PPOBPROD("117.54.12.146", "adhy", "4dhy@1Ds", 2260, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "ppobprod", "adhy", "4dhy@1Ds"),
-		IDSPROD("117.54.12.146", "adhy", "4dhy@1Ds", 2260, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "idsprod", "adhy", "4dhy@1Ds"),
-		SETORKU("117.54.12.146", "adhy", "4dhy@1Ds", 2261, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "setorku", "adhy", "4dhy@1Ds"),
-		IDS_SETORKU("117.54.12.146", "adhy", "4dhy@1Ds", 2261, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "ids_setorku", "adhy", "4dhy@1Ds"),
-		DANA("117.54.12.146", "adhy", "4dhy@1Ds", 2262, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "dana", "adhy", "4dhy@1Ds"),
-		MnM("117.54.12.146", "adhy", "4dhy@1Ds", 2263, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "ids_messaging", "adhy", "4dhy@1Ds"),
-		DIMS("117.54.12.146", "adhy", "4dhy@1Ds", 3358, "localhost", 3306,
-				"src/test/resources/sshprivatekey/newopenssh", "dims", "adhy", "4dhy@1Ds");
 
-		private final String sshHost;
-		private final String sshUser;
-		private final String sshPassword;
-		private final int sshPort;
-		private final String remoteHost;
-		private final int remotePort;
-		private final String privateKeyPath;
-		private final String dbName;
-		private final String dbUser;
-		private final String dbPassword;
+    public enum DatabaseEnvironmentDEV {
+        PPOBPROD("117.54.12.146", 3360, "ppobprod", "adhy", "4dhy@1Ds"),
+        MULTIBILLER("10.254.76.51", 3306, "multibiller", "read_only", "qwHhCeDhNlgedvRKv2unh8HrR1vX7bY5"),
+        SETORKU("10.254.76.22", 3306, "setorku", "read_only", "F1GBYrhn7pSFaeHCHdIbDXrfHVYCZmI6"),
+        SOLUSIPAY("10.254.76.16", 3306, "solusipay", "read_only", "PImq3JO4bOj8LKiec4wkKRu2Ps6Pyyn3"),
+        DANA("10.254.76.42", 3306, "dana", "read_only", "OE92iIyN3vd7eiA8AWByEbTKHfH1o68R"),
+        OYPAYMENT("10.254.76.234", 3306, "oypayment", "read_only", "hYTq2aTTUsKSOGSjZQnYSRdlLmoQsYvO"),
+        PAYMENTGATEWAY("10.254.76.45", 3306, "paymentgateway", "read_only", "7OmYQjdCwBIaBAxV2oXFcXMZx8JarQzy"),
+        DISI("10.254.76.70", 3306, "disi", "read_only", "IXk5T4HBHkgRaRqAkbs6tH5x29zfysD1"),
+        MnM("10.254.76.16", 3306, "ids_messaging", "read_only", "PImq3JO4bOj8LKiec4wkKRu2Ps6Pyyn3"),
+        DIMS("10.254.76.19", 3306, "dims", "read_only", "p3c7RU0o4sifzqp28z1cn2qyMs4ExRsS");
 
-		DatabaseEnvironmentDEV(String sshHost, String sshUser, String sshPassword, int sshPort,
-				String remoteHost, int remotePort, String privateKeyPath, String dbName, String dbUser,
-				String dbPassword) {
-			this.sshHost = sshHost;
-			this.sshUser = sshUser;
-			this.sshPassword = sshPassword;
-			this.sshPort = sshPort;
-			this.remoteHost = remoteHost;
-			this.remotePort = remotePort;
-			this.privateKeyPath = privateKeyPath;
-			this.dbName = dbName;
-			this.dbUser = dbUser;
-			this.dbPassword = dbPassword;
-		}
+        private final String remoteHost;
+        private final int remotePort;
+        private final String dbName;
+        private final String dbUser;
+        private final String dbPassword;
 
-		public String getSshHost() {
-			return sshHost;
-		}
+        DatabaseEnvironmentDEV(String remoteHost, int remotePort, String dbName, String dbUser, String dbPassword) {
+            this.remoteHost = remoteHost;
+            this.remotePort = remotePort;
+            this.dbName = dbName;
+            this.dbUser = dbUser;
+            this.dbPassword = dbPassword;
+        }
 
-		public String getSshUser() {
-			return sshUser;
-		}
+        public String getRemoteHost() {
+            return remoteHost;
+        }
 
-		public String getSshPassword() {
-			return sshPassword;
-		}
+        public int getRemotePort() {
+            return remotePort;
+        }
 
-		public int getSshPort() {
-			return sshPort;
-		}
+        public String getDbName() {
+            return dbName;
+        }
 
-		public String getRemoteHost() {
-			return remoteHost;
-		}
+        public String getDbUser() {
+            return dbUser;
+        }
 
-		public int getRemotePort() {
-			return remotePort;
-		}
+        public String getDbPassword() {
+            return dbPassword;
+        }
+    }
 
-		public String getPrivateKeyPath() {
-			return privateKeyPath;
-		}
+    private static final Map<String, DatabaseEnvironmentDEV> ENVIRONMENT_MAP = new HashMap<>();
 
-		public String getDbName() {
-			return dbName;
-		}
+    static {
+        for (DatabaseEnvironmentDEV environment : DatabaseEnvironmentDEV.values()) {
+            ENVIRONMENT_MAP.put(environment.name(), environment);
+        }
+    }
 
-		public String getDbUser() {
-			return dbUser;
-		}
+    public static DatabaseEnvironmentDEV getEnvironmentByName(String environmentName) {
+        return ENVIRONMENT_MAP.get(environmentName);
+    }
 
-		public String getDbPassword() {
-			return dbPassword;
-		}
-	}
+    public static class DatabaseConfigDev {
+        public final String JDBC_URL;
+        public final String DB_USERNAME;
+        public final String DB_PASSWORD;
 
-	private static final Map<String, DatabaseEnvironmentDEV> ENVIRONMENT_MAP = new HashMap<>();
+        public DatabaseConfigDev(DatabaseEnvironmentDEV environment) {
+            JDBC_URL = "jdbc:mysql://" + environment.getRemoteHost() + ":" + environment.getRemotePort() + "/"
+                    + environment.getDbName();
+            DB_USERNAME = environment.getDbUser();
+            DB_PASSWORD = environment.getDbPassword();
+        }
+    }
 
-	static {
-		for (DatabaseEnvironmentDEV environment : DatabaseEnvironmentDEV.values()) {
-			ENVIRONMENT_MAP.put(environment.name(), environment);
-		}
-	}
-
-	public static DatabaseEnvironmentDEV getEnvironmentByName(String environmentName) {
-		return ENVIRONMENT_MAP.get(environmentName);
-	}
-
-	public static class DatabaseConfigDev {
-		public final String sshHost;
-		public final String sshUser;
-		public final String sshPassword;
-		public final int sshPort;
-		public final String remoteHost;
-		public final int remotePort;
-		public final String privateKeyPath;
-		public final String jdbcUrl;
-		public final String jdbcUrlHikari;
-		public final String dbUser;
-		public final String dbPassword;
-
-		public DatabaseConfigDev(DatabaseEnvironmentDEV environment) {
-			sshHost = environment.getSshHost();
-			sshUser = environment.getSshUser();
-			sshPassword = environment.getSshPassword();
-			sshPort = environment.getSshPort();
-			remoteHost = environment.getRemoteHost();
-			remotePort = environment.getRemotePort();
-			privateKeyPath = environment.getPrivateKeyPath();
-			jdbcUrl = "jdbc:mysql://" + environment.getRemoteHost() + ":" + environment.getRemotePort() + "/" + environment.getDbName();
-			jdbcUrlHikari = "jdbc:mysql://" + environment.getSshHost() + ":" + environment.getSshPort() + "/" + environment.getDbName() + "?zeroDateTimeBehavior=convertToNull";
-			dbUser = environment.getDbUser();
-			dbPassword = environment.getDbPassword();
-		}
-	}
+    public static final List<DatabaseConfigDev> DATABASE_CONFIGS_STG = Arrays.asList(
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.PPOBPROD),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.MULTIBILLER),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.SETORKU),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.SOLUSIPAY),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.DANA),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.OYPAYMENT),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.PAYMENTGATEWAY),
+            new DatabaseConfigDev(DatabaseEnvironmentDEV.DISI));
 }
-

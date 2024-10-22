@@ -7,8 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlRootElement(name = "data")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "trxid", "trxdate", "partnerid", "productid", "customerid", "customername", "totalamount",
-        "additionaldata", "rc", "rcdesc", "trackingref", "terminalid", "signature" })
+@XmlType(propOrder={"trxid", "trxdate", "partnerid", "productid", "customerid", "customername", "totalamount", "additionaldata", "rc", "rcdesc", "trackingref", "terminalid", "signature"})
 public class ResInquiryXml {
     private String trxid;
     private String trxdate;
@@ -126,24 +125,5 @@ public class ResInquiryXml {
 
     public void setSignature(String signature) {
         this.signature = signature;
-    }
-
-    public String toXml() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                "<data>\n" +
-                "    <trxid>" + trxid + "</trxid>\n" +
-                "    <trxdate>" + trxdate + "</trxdate>\n" +
-                "    <partnerid>" + partnerid + "</partnerid>\n" +
-                "    <productid>" + productid + "</productid>\n" +
-                "    <customerid>" + customerid + "</customerid>\n" +
-                "    <customername>" + customername + "</customername>\n" +
-                "    <totalamount>" + totalamount + "</totalamount>\n" +
-                "    <additionaldata>" + additionaldata + "</additionaldata>\n" +
-                "    <rc>" + rc + "</rc>\n" +
-                "    <rcdesc>" + rcdesc + "</rcdesc>\n" +
-                "    <trackingref>" + trackingref + "</trackingref>\n" +
-                "    <terminalid>" + terminalid + "</terminalid>\n" +
-                "    <signature>" + signature + "</signature>\n" +
-                "</data>";
     }
 }

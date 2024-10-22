@@ -1,13 +1,16 @@
 package database;
 
-import com.jcraft.jsch.JSchException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.jcraft.jsch.Session;
 import com.zaxxer.hikari.HikariDataSource;
+
 import utility.db.DBConfigDev;
 import utility.db.DBConfigStg;
-import utility.db.SSHTunnel;
-
-import java.sql.*;
 
 public class LoadDataSource implements AutoCloseable {
     private HikariDataSource hikariDataSource = null;
@@ -19,13 +22,6 @@ public class LoadDataSource implements AutoCloseable {
     private int rowId = 1;
 
     public LoadDataSource(String environmentName, String environmentSvr) {
-        String sshHost = "";
-        String sshUser = "";
-        String privateKeyPath = "";
-        String sshPassword = "";
-        int sshPort = 0;
-        String remoteHost = "";
-        int remotePort = 0;
         String jdbcUrl = "";
         String dbUser = "";
         String dbPassword = "";
@@ -34,12 +30,16 @@ public class LoadDataSource implements AutoCloseable {
             DBConfigDev.DatabaseEnvironmentDEV environment = DBConfigDev.getEnvironmentByName(environmentName);
             DBConfigDev.DatabaseConfigDev config = new DBConfigDev.DatabaseConfigDev(environment);
 
+            jdbcUrl = config.JDBC_URL;
+            dbUser = config.DB_USERNAME;
+            dbPassword = config.DB_PASSWORD;
+
             if (environmentName.equals("DIMS")) {
                 if (hikariDataSource == null) {
                     hikariDataSource = new HikariDataSource();
-                    hikariDataSource.setJdbcUrl(config.jdbcUrlHikari);
-                    hikariDataSource.setUsername(config.dbUser);
-                    hikariDataSource.setPassword(config.dbPassword);
+                    hikariDataSource.setJdbcUrl(config.JDBC_URL);
+                    hikariDataSource.setUsername(config.DB_USERNAME);
+                    hikariDataSource.setPassword(config.DB_PASSWORD);
                     hikariDataSource.setPoolName(environmentName + "QA");
                     hikariDataSource.setIdleTimeout(30000);
                     hikariDataSource.setMaximumPoolSize(60);
@@ -52,27 +52,8 @@ public class LoadDataSource implements AutoCloseable {
                     try {
                         con = hikariDataSource.getConnection();
                     } catch (SQLException e) {
-                        System.out.println("ERROR: "+ e);
+                        System.out.println("ERROR: " + e);
                     }
-                }
-            } else {
-                sshHost = config.sshHost;
-                sshUser = config.sshUser;
-                privateKeyPath = config.privateKeyPath;
-                sshPassword = config.sshPassword;
-                sshPort = config.sshPort;
-                remoteHost = config.remoteHost;
-                remotePort = config.remotePort;
-                jdbcUrl = config.jdbcUrl;
-                dbUser = config.dbUser;
-                dbPassword = config.dbPassword;
-
-                try {
-                    // Establish SSH tunnel
-                    session = SSHTunnel.createSSHTunnel(sshHost, sshUser, privateKeyPath, sshPassword
-                            , sshPort, remoteHost, remotePort);
-                } catch (JSchException e) {
-                    throw new RuntimeException(e);
                 }
             }
         } else {
@@ -91,6 +72,10 @@ public class LoadDataSource implements AutoCloseable {
                 System.out.println("ERROR: " + e);
             }
         }
+    }
+
+    public Connection getConnection() {
+        return con;
     }
 
     public void query(String sql, boolean insertupdatedId) throws SQLException {
@@ -197,7 +182,7 @@ public class LoadDataSource implements AutoCloseable {
         if (session != null && session.isConnected()) {
             session.disconnect();
         }
-        if ( hikariDataSource != null) {
+        if (hikariDataSource != null) {
             hikariDataSource.close();
         }
     }

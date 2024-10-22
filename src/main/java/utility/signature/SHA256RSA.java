@@ -13,7 +13,6 @@ import javax.xml.bind.DatatypeConverter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class SHA256RSA {
-    
     public String sign(String plainText, PrivateKey privateKey) throws Exception {
         Signature privateSignature = Signature.getInstance("SHA256withRSA");
         privateSignature.initSign(privateKey);
@@ -53,6 +52,17 @@ public class SHA256RSA {
         privateSignature.update(message.getBytes("UTF-8"));
         byte[] s = privateSignature.sign();
         return Base64.getEncoder().encodeToString(s);
+    }
+
+    public String sign5(String plainText, PrivateKey privateKey) throws Exception {
+        Signature privateSignature = Signature.getInstance("SHA256withRSA");
+        privateSignature.initSign(privateKey);
+        privateSignature.update(plainText.getBytes("UTF-8"));
+
+        byte[] signature = privateSignature.sign();
+
+        //return Base64.getEncoder().encodeToString(signature);
+        return DatatypeConverter.printBase64Binary(signature);
     }
     
     public static boolean verify(String plainText, String signature, PublicKey publicKey) throws Exception {

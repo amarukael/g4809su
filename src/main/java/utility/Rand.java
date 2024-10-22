@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Rand {
 	private final Random r = new Random();
-//	private String words = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	// private String words = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private final SimpleDateFormat formatter2 = new SimpleDateFormat("yyyyMMdd");
 	private final SimpleDateFormat formatter3 = new SimpleDateFormat("HHmmss");
@@ -22,70 +22,67 @@ public class Rand {
 
 	public String getRandomTrxId() {
 		String trxid = "";
-//		trxid = trxid + words.charAt(r.nextInt(words.length()));
+		// trxid = trxid + words.charAt(r.nextInt(words.length()));
 		trxid = trxid + ("IDS");
-		
+
 		Date date = new Date();
 		trxid = trxid + formatter2.format(date) + formatter3.format(date);
-		
+
 		trxid = trxid + String.valueOf(r.nextInt(10)) + String.valueOf(r.nextInt(10));
-		
+
 		return trxid;
 	}
 
-	public String getRandomTrxId(String prefix , String suffix) {
+	public String getRandomTrxId(String prefix, String suffix) {
 		prefix = prefix == null ? "" : prefix;
 		suffix = suffix == null ? "" : suffix;
 
 		String trxid = "";
-//		trxid = trxid + words.charAt(r.nextInt(words.length()));
-		trxid = trxid + prefix;
+		// trxid = trxid + words.charAt(r.nextInt(words.length()));
 
 		Date date = new Date();
-		trxid = trxid + formatter2.format(date) + formatter3.format(date);
+		trxid = prefix + trxid + formatter2.format(date) + formatter3.format(date);
 
 		trxid = trxid + String.valueOf(r.nextInt(10)) + String.valueOf(r.nextInt(10)) + suffix;
 
 		return trxid;
 	}
 
-
-
 	public String getCurrentDate() {
 		String trxdate = "";
 		Date date = new Date();
-		
+
 		trxdate = formatter.format(date);
-		
+
 		return trxdate;
 	}
-	
+
 	public String getDateTimeReq() {
 		String trxdate = "";
 		Date date = new Date();
-		
+
 		trxdate = formatter2.format(date) + formatter3.format(date);
-		
+
 		return trxdate;
 	}
-	
+
 	public String getRandomRef() {
 		String trackingref = "";
-//		trackingref = trackingref + words.charAt(r.nextInt(words.length()));
+		// trackingref = trackingref + words.charAt(r.nextInt(words.length()));
 		trackingref = trackingref + ("IDS");
-		
+
 		Date date = new Date();
 		trackingref = trackingref + formatter2.format(date) + formatter3.format(date);
-		
+
 		trackingref = trackingref + String.valueOf(r.nextInt(10)) + String.valueOf(r.nextInt(10));
-		
+
 		return trackingref;
 	}
 
 	public String getRandomRef2(Integer lenghtData) {
 		String trackingref = "";
-//		trackingref = trackingref + words.charAt(r.nextInt(words.length()));
-//		trackingref = trackingref + ("IDS");
+		// trackingref = trackingref + words.charAt(r.nextInt(words.length()));
+		// trackingref = trackingref + ("IDS");
 
 		Date date = new Date();
 		trackingref = trackingref + formatter2.format(date);
@@ -94,16 +91,16 @@ public class Rand {
 
 		return trackingref;
 	}
-	
+
 	public String getTimeStamp() {
 		String timestamp = "";
 		Date date = new Date();
-		
-		timestamp = formatter4.format(date)+"T"+formatter5.format(date)+"+07:00";
-		
+
+		timestamp = formatter4.format(date) + "T" + formatter5.format(date) + "+07:00";
+
 		return timestamp;
 	}
-	
+
 	public String getExternalID(int flg) {
 		String externalID = "";
 		Date date = new Date();
@@ -114,16 +111,16 @@ public class Rand {
 			externalID = formatter8.format(date) + randStrNum(6);
 		else
 			externalID = randStrNum(6) + formatter8.format(date);
-		
+
 		return externalID;
 	}
-	
+
 	public String getOriginalPartnerReferenceNo() {
 		String originalPartnerReferenceNo = "";
 		Date date = new Date();
-		
+
 		originalPartnerReferenceNo = formatter6.format(date) + formatter3.format(date);
-		
+
 		return originalPartnerReferenceNo;
 	}
 
