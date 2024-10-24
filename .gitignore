@@ -5,3 +5,4 @@
 .settings/
 .vscode/
 pom.xml
+src/test/resources/sshprivatekey/

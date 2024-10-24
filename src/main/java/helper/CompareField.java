@@ -2,8 +2,12 @@ package helper;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Objects;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import io.cucumber.java.Scenario;
 
@@ -175,20 +179,30 @@ public class CompareField {
     private static Field getFieldByName(Field[] fields, String fieldName) {
         for (Field field : fields) {
             String fieldNameLowerCase = field.getName().toString().toLowerCase();
-            if (fieldNameLowerCase.equals(fieldName.toLowerCase())) {
+            if (fieldNameLowerCase.equals(fieldName.toString().toLowerCase())) {
                 return field;
             }
         }
         return null;
     }
 
-    public static List<String> compareObjects(Object obj1, Object obj2, List<String> excludedFields,
-            String nameValidate) {
+    private static String getFieldByName(JsonNode node, String fieldName) {
+        Iterator<Entry<String, JsonNode>> fields = node.fields();
+        while (fields.hasNext()) {
+            Entry<String, JsonNode> field = fields.next();
+            String fieldName2 = field.getKey().toString().toLowerCase();
+            if (fieldName.equals(fieldName2)) {
+                return field.getKey();
+            }
+        }
+        return fieldName;
+    }
+
+    public static List<String> compareObjects(Object obj1, Object obj2, List<String> excludedFields) {
         List<String> tmpMessage = new ArrayList<>();
         String tmpStr = "";
         Field[] fields1;
         Field[] fields2;
-        tmpMessage.add("• Validation " + nameValidate + " : ");
         try {
             fields1 = obj1.getClass().getDeclaredFields();
             fields2 = obj2.getClass().getDeclaredFields();
@@ -197,6 +211,7 @@ public class CompareField {
 
                 String fieldName1 = field1.getName().toString();
                 String value1 = "";
+
                 if (field1.get(obj1) != null) {
                     value1 = field1.get(obj1).toString();
                 }
@@ -206,14 +221,6 @@ public class CompareField {
                 } else if (fieldName1.equals("additionaldata") &&
                         (value1.equals("[]") || value1.equals(""))) {
                     continue;
-                } else if (nameValidate.contains("Database")) {
-                    if (fieldName1.equals("productid")) {
-                        fieldName1 = "switchid";
-                    } else if (fieldName1.equals("totalamount")) {
-                        fieldName1 = "amount";
-                    } else if (fieldName1.equals("additionaldatanew")) {
-                        fieldName1 = "additionaldata";
-                    }
                 }
 
                 Field field2 = getFieldByName(fields2, fieldName1);
@@ -235,15 +242,50 @@ public class CompareField {
         return tmpMessage;
     }
 
+    public static List<String> compareJson(JsonNode node1, JsonNode node2, List<String> excludedFields) {
+        List<String> tmpMessage = new ArrayList<>();
+        try {
+            String tmpStr = "";
+            Iterator<Entry<String, JsonNode>> fields = node1.fields();
+            while (fields.hasNext()) {
+                Entry<String, JsonNode> field = fields.next();
+                String fieldName = field.getKey().toString().toLowerCase();
+                String value1 = field.getValue().toString().replace("\"", "");
+
+                if (excludedFields != null && excludedFields.contains(fieldName)) {
+                    continue;
+                }
+
+                fieldName = getFieldByName(node2, fieldName);
+                if (fieldName != null && node2.has(fieldName)) {
+                    String value2 = node2.get(fieldName).toString().replace("\"", "");
+                    if (value1.equals(value2)) {
+                        tmpStr = " - Fields " + fieldName + " are equal";
+                    } else {
+                        tmpStr = " - Fields " + fieldName + " are different.";
+                        System.out.println(
+                                "Field '" + fieldName + "' memiliki nilai yang berbeda: " + value1 + " vs " +
+                                        value2);
+                    }
+                    tmpMessage.add(tmpStr);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tmpMessage;
+    }
+
     public static <T> String compare_value(List<T> list, String nameValidate) {
         if (list.isEmpty()) {
-            return "- " +nameValidate + " is empty";
+            return "- " + nameValidate + " is empty";
         }
 
         T firstElement = list.get(0);
         for (T element : list) {
             if (!element.equals(firstElement)) {
-                return "- " +nameValidate + " is different";
+                return "- " + nameValidate + " is different";
             }
         }
         return "- " + nameValidate + " is equal";

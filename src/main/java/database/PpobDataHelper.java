@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import constant.ConstantPpob;
 import model.ppob.database.PpobTbInquiry;
 import model.ppob.database.PpobTbLogpay;
+import model.ppob.database.PpobTbRefund;
+import model.ppob.database.PpobTbSuspect;
 
 public class PpobDataHelper {
     static String dbEnvironmentName = ConstantPpob.dbEnvironmentName;
@@ -125,6 +127,89 @@ public class PpobDataHelper {
             e.printStackTrace();
         }
         return tb_logpay;
+    }
+
+    public PpobTbSuspect get_data_suspect_by_trackingref(String trackingRef) {
+        String strSQL = "SELECT * FROM tb_r_logsuspectdata WHERE tracking_ref = ?";
+        PpobTbSuspect tb_suspect = null;
+
+        try (Connection connection = getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(strSQL)) {
+            pstmt.setString(1, trackingRef);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tb_suspect = new PpobTbSuspect(
+                        rs.getString("trxid"),
+                        rs.getString("tracking_ref"),
+                        rs.getString("partnerid"),
+                        rs.getString("customerid"),
+                        rs.getBigDecimal("amount"),
+                        rs.getString("receiptno"),
+                        rs.getString("additionaldata"),
+                        rs.getDate("transactiondate"),
+                        rs.getDate("createdon"),
+                        rs.getString("productid"),
+                        rs.getString("stan"),
+                        rs.getString("extendinfo"),
+                        rs.getString("orderid"),
+                        rs.getString("switchid"),
+                        rs.getString("supplierref"),
+                        rs.getBigDecimal("nominal"),
+                        rs.getBigDecimal("adminfee"),
+                        rs.getString("rc"),
+                        rs.getString("supplier_rc"),
+                        rs.getString("supplier_rcdesc"),
+                        rs.getInt("order_id_is_null"),
+                        rs.getString("supplier_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tb_suspect;
+    }
+
+    public PpobTbRefund get_data_refund_by_trackingref(String trackingRef) {
+        String strSQL = "SELECT * FROM tb_r_logpayrefund WHERE tracking_ref = ?";
+        PpobTbRefund tbRefund = null;
+
+        try (Connection connection = getConnection();
+                PreparedStatement pstmt = connection.prepareStatement(strSQL)) {
+            pstmt.setString(1, trackingRef);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                tbRefund = new PpobTbRefund(
+                        rs.getString("trxid"),
+                        rs.getString("tracking_ref"),
+                        rs.getString("partnerid"),
+                        rs.getString("customerid"),
+                        rs.getBigDecimal("amount"),
+                        rs.getString("receiptno"),
+                        rs.getString("additionaldata"),
+                        rs.getTimestamp("transactiondate"),
+                        rs.getTimestamp("CreatedOn"),
+                        rs.getString("productid"),
+                        rs.getString("stan"),
+                        rs.getString("extendinfo"),
+                        rs.getString("orderid"),
+                        rs.getString("switchid"),
+                        rs.getString("supplierref"),
+                        rs.getBigDecimal("nominal"),
+                        rs.getBigDecimal("adminfee"),
+                        rs.getTimestamp("createdon_suspect"),
+                        rs.getString("finished_by"),
+                        rs.getString("rc"),
+                        rs.getString("supplier_rc"),
+                        rs.getString("supplier_rcdesc"),
+                        rs.getString("prev_rc"),
+                        rs.getString("prev_supplier_rc"),
+                        rs.getString("prev_supplier_rcdesc"),
+                        rs.getInt("order_id_is_null"),
+                        rs.getString("supplier_id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tbRefund;
     }
 
     public String getAdditionalDataTypeByTrackingRef(String trackingRef, String table) {

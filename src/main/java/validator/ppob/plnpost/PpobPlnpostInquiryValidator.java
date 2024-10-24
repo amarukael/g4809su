@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.gson.Gson;
 
 import database.PpobDataHelper;
@@ -19,7 +20,7 @@ import model.ppob.database.PpobTbInquiry;
 import model.ppob.inquiry.ReqInquiry;
 import model.ppob.inquiry.ResInquiry;
 import model.ppob.inquiry.additionaldata2.plnpost.PlnpostInqAdd2;
-import validator.ppob.PpobInquiryValidator;
+import validator.ppob.validator.PpobInquiryValidator;
 
 public class PpobPlnpostInquiryValidator {
     private List<String> tmpMessage = new ArrayList<>();
@@ -174,10 +175,16 @@ public class PpobPlnpostInquiryValidator {
 
     private boolean dbResponseValidator(ResInquiry resInquiry, PpobTbInquiry tbInquiry) {
         List<String> excludedFields = Arrays.asList("trxid", "trxdate", "signature");
+        ObjectMapper objectMapper = new ObjectMapper();
         tmpMessage.clear();
         try {
-            tmpMessage.addAll(CompareField.compareObjects(resInquiry, tbInquiry, excludedFields,
-                    "Database Response"));
+            String jsonString = objectMapper.writeValueAsString(resInquiry);
+            ObjectNode jsonNode = (ObjectNode) objectMapper.readTree(jsonString);
+            jsonNode.set("switchid", jsonNode.remove("productid"));
+            jsonNode.set("amount", jsonNode.remove("totalamount"));
+            jsonNode.set("additionaldata", jsonNode.remove("additionaldatanew"));
+
+            tmpMessage.addAll(CompareField.compareObjects(jsonNode, tbInquiry, excludedFields));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -188,9 +195,9 @@ public class PpobPlnpostInquiryValidator {
     private boolean requestResponseValidator(ReqInquiry reqInquiry, ResInquiry resInquiry) {
         List<String> excludedFields = Arrays.asList("trxdate", "signature");
         tmpMessage.clear();
+        tmpMessage.add("• Validation Request Response : ");
         try {
-            tmpMessage.addAll(CompareField.compareObjects(reqInquiry, resInquiry, excludedFields,
-                    "Request Response"));
+            tmpMessage.addAll(CompareField.compareObjects(reqInquiry, resInquiry, excludedFields));
 
         } catch (Exception e) {
             e.printStackTrace();

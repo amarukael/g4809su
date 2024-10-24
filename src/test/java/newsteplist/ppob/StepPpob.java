@@ -10,20 +10,21 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import constant.ConstantAPIProject;
 import constant.ConstantPpob;
 import helper.Helper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import model.FormatReport;
+import services.ppob.AdvicePpob;
 import services.ppob.InquiryPpob;
 import services.ppob.PaymentPpob;
 import services.ppob.Ppob;
 import utility.CSVDataReader;
 import utility.ExcelDataWriter;
-import validator.ppob.PpobInquiryValidator;
-import validator.ppob.PpobPaymentValidator;
+import validator.ppob.validator.PpobAdviceValidator;
+import validator.ppob.validator.PpobInquiryValidator;
+import validator.ppob.validator.PpobPaymentValidator;
 
 public class StepPpob {
     long StartTime;
@@ -39,6 +40,7 @@ public class StepPpob {
 
     InquiryPpob inquiry;
     PaymentPpob payment;
+    AdvicePpob advice;
     Helper helper = new Helper();
 
     @Given("I have CSV data file for testing PPOB {string}")
@@ -78,7 +80,16 @@ public class StepPpob {
                         data.get("totalAmount"));
                 countTC++;
             }
-
+            if (data.get("IsAdv").equalsIgnoreCase("TRUE")) {
+                Helper.hitDelayTime();
+                ppob.postAdvice(tmpTC,
+                        data.get("partnerId"),
+                        data.get("productId"),
+                        data.get("customerId"),
+                        data.get("extendInfo"),
+                        data.get("terminalId"));
+                countTC++;
+            }
         }
     }
 
@@ -117,9 +128,10 @@ public class StepPpob {
                 System.out.println("Checking Payment response: " + tmpTC);
                 try {
                     payment = ppob.getPaymentPpobList().get(tmpTC);
+                    inquiry = ppob.getInquiryPpobList().get(tmpTC);
                     if (!payment.getResPay().getRc().equals(" ")) {
                         PpobPaymentValidator payValidator = PpobPaymentValidator.builder()
-                                .resInquiry(inquiry != null ? inquiry.getResInq() : null)
+                                .resInquiry(inquiry.getResInq())
                                 .resPayment(payment.getResPay()).reqPayment(payment.getReqPay()).build();
                         if (payment.getResPay().getRc().equalsIgnoreCase(data.get("RCPay")) & payValidator.validate()) {
                             status = "Pass";
@@ -136,6 +148,30 @@ public class StepPpob {
                     addValidationNoteData(tmpTC, "Payment", Collections.singletonList(e.getMessage()));
                 }
                 statusData.put(tmpTC + "-Payment", status);
+                status = "Not Pass";
+            }
+            if (data.get("IsAdv").equalsIgnoreCase("TRUE")) {
+                System.out.println("Checking Advice response: " + tmpTC);
+                try {
+                    advice = ppob.getAdvicePpobList().get(tmpTC);
+                    if (!advice.getResAdv().getRc().equals(" ")) {
+                        PpobAdviceValidator advValidator = PpobAdviceValidator.builder()
+                                .reqAdvice(advice.getReqAdv()).resAdvice(advice.getResAdv()).build();
+                        if (advice.getResAdv().getRc().equalsIgnoreCase(data.get("RCAdv")) & advValidator.validate()) {
+                            status = "Pass";
+                            countPass++;
+                        } else {
+                            countNtPass++;
+                        }
+                        addValidationNoteData(tmpTC, "Advice", advValidator.getValidationMessage());
+                    } else {
+                        countNtPass++;
+                    }
+                } catch (Exception e) {
+                    status = "Not Pass";
+                    addValidationNoteData(tmpTC, "Advice", Collections.singletonList(e.getMessage()));
+                }
+                statusData.put(tmpTC + "-Advice", status);
                 status = "Not Pass";
             }
         }
@@ -199,8 +235,33 @@ public class StepPpob {
                             data.get("TCTypePay"), prettyReq, prettyRes, data.get("RCPay"), rc, rcDesc,
                             statusData.get(tmpTC + "-Payment"), validationNote));
                 }
+                if (data.get("IsAdv").equalsIgnoreCase("TRUE")) {
+                    advice = ppob.getAdvicePpobList().get(tmpTC);
+                    String prettyReq = gson.toJson(advice.getReqAdv());
+                    String prettyRes = "";
+                    try {
+                        prettyRes = gson.toJson(advice.getResAdv());
+                    } catch (Exception e) {
+                        prettyRes = "ERROR, Check Notes for Further explanation! ";
+                    }
+                    String validationNote = String.join("\n",
+                            validationNoteData.getOrDefault(tmpTC + "-Advice", Collections.emptyList()));
+
+                    validationNote += "\n Timetaken: ";
+                    String rc = null;
+                    String rcDesc = null;
+                    if (advice.getResAdv() != null) {
+                        rc = advice.getResAdv().getRc();
+                        rcDesc = advice.getResAdv().getRcdesc();
+                    }
+
+                    resultData.add(helper.createDataReport(data.get("TC"), data.get("caseDesc"), "Advice", "POST",
+                            ConstantPpob.ppobAdvV2,
+                            data.get("TCTypeAdv"), prettyReq, prettyRes, data.get("RCAdv"), rc, rcDesc,
+                            statusData.get(tmpTC + "-Advice"), validationNote));
+                }
             }
-            ExcelDataWriter.writeExcelData(projectNm, ConstantAPIProject.environmentSvr, resultData);
+            ExcelDataWriter.writeExcelData(projectNm, ConstantPpob.environmentSvr, resultData);
         } catch (IOException e) {
             e.printStackTrace();
         }

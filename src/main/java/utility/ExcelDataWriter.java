@@ -437,6 +437,9 @@ public class ExcelDataWriter {
                         database = (parts.length > 1) ? parts[1].trim() : "";
                         notes = (parts.length > 2) ? parts[parts.length - 1].trim() : "";
                     }
+                    if (notes.equals("")) {
+                        notes = fRep.getNotes();
+                    }
 
                     if (activeSheet.equalsIgnoreCase("Summary")) {
                         if (i == 0)

@@ -13,9 +13,8 @@ public class Ppob {
     LinkedHashMap<String, InquiryPpob> InquiryPpobList = new LinkedHashMap<>();
     @Getter
     LinkedHashMap<String, PaymentPpob> PaymentPpobList = new LinkedHashMap<>();
-    // @Getter
-    // LinkedHashMap<String, AdviceApiproj> AdviceApiProjList = new
-    // LinkedHashMap<>();
+    @Getter
+    LinkedHashMap<String, AdvicePpob> AdvicePpobList = new LinkedHashMap<>();
     // @Getter
     // LinkedHashMap<String, ReversalApiproj> ReversalApiProjList = new
     // LinkedHashMap<>();
@@ -63,6 +62,29 @@ public class Ppob {
                 terminalId);
         payment.hitRequest();
         PaymentPpobList.put(tmpTC, payment);
+    }
+
+    public void postAdvice(
+            String tmpTC,
+            String partnerId,
+            String productId,
+            String customerId,
+            String extendInfo,
+            String terminalId) {
+        trackingref = PaymentPpobList.get(tmpTC).getReqPay().getTrackingref();
+        if (trackingref == null) {
+            trackingref = r.getRandomTrxId(partnerId, "");
+        }
+        AdvicePpob advicePpob = new AdvicePpob();
+        advicePpob.generateRequest(
+                trackingref,
+                partnerId,
+                productId,
+                customerId,
+                extendInfo,
+                terminalId);
+        advicePpob.hitRequest();
+        AdvicePpobList.put(tmpTC, advicePpob);
     }
 
     private String getTotalAmountFromInquiry(String checkTotalAmount, InquiryPpob inquiry) {
